@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengaturan Pejabat & Akun - E-DISON Sondakan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f6f2ea;
+        background-image: radial-gradient(
+          circle at top right,
+          #fff9ee 0%,
+          #f6f2ea 55%,
+          #ede6d8 100%
+        );
+      }
+      .tactile-surface {
+        background: #fffdf9;
+        border: 1px solid #e6decb;
+        box-shadow:
+          0 12px 28px -12px rgba(87, 68, 42, 0.12),
+          0 2px 6px rgba(87, 68, 42, 0.05);
+      }
+      .tactile-field {
+        background: #faf6ef;
+        border: 1.5px solid #dfd5c0;
+        box-shadow: inset 0 1px 2px rgba(87, 68, 42, 0.05);
+      }
+      .tactile-field:focus {
+        background: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+        outline: none;
+      }
+      .tactile-pill {
+        background: #faf6ef;
+        border: 1px solid #e6decb;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col text-stone-800">
+    <!-- Navbar / Header Warna Disamakan dengan diskusi.html -->
+    <nav
+      class="sticky top-0 z-20 border-b border-[#e6decb] bg-[#fffdf9]/95 backdrop-blur-sm shadow-sm"
+    >
+      <div
+        class="mx-auto flex max-w-screen-2xl items-center justify-between px-4 py-3 sm:px-6"
+      >
+        <a href="monitoring.html" class="flex items-center gap-3">
+          <div
+            class="rounded-full border border-[#dfd5c0] bg-[#f3ece0] p-0.5 shadow-sm"
+          >
+            <img
+              src="logo_kelurahan.png"
+              alt="Logo Kelurahan Sondakan"
+              class="h-10 w-10 rounded-full object-cover"
+            />
+          </div>
+          <div>
+            <p class="text-lg font-extrabold tracking-tight text-stone-900">
+              E-DISON
+            </p>
+            <p class="text-[11px] font-semibold text-blue-700">
+              Kelurahan Sondakan
+            </p>
+          </div>
+        </a>
+
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <span
+            id="badgePenggunaAktif"
+            class="tactile-pill hidden rounded-full px-3.5 py-1.5 text-xs font-bold text-stone-700 sm:inline-flex items-center gap-1.5"
+          >
+            Memuat akun...
+          </span>
+          <button
+            type="button"
+            onclick="keluarSistem()"
+            class="rounded-2xl bg-red-500 hover:bg-red-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition"
+          >
+            Keluar 🚪
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      class="mx-auto flex w-full max-w-screen-2xl flex-1 flex-col md:flex-row"
+    >
+      <!-- Sidebar Soft Tactile -->
+      <aside
+        class="border-b border-[#e6decb] bg-[#fffdf9] p-3 md:w-64 md:border-b-0 md:border-r md:p-4"
+      >
+        <p
+          class="mb-2 px-3 text-[11px] font-bold uppercase tracking-wider text-stone-400"
+        >
+          Menu Utama
+        </p>
+        <nav
+          class="flex gap-2 overflow-x-auto md:flex-col"
+          aria-label="Navigasi utama"
+        >
+          <a
+            href="index.html"
+            id="menuInput"
+            class="whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-medium text-stone-600 transition hover:bg-[#faf6ef] hover:text-blue-700"
+          >
+            📥 Input Surat Masuk
+          </a>
+          <a
+            href="daftar-surat.html"
+            id="menuDaftar"
+            class="whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-medium text-stone-600 transition hover:bg-[#faf6ef] hover:text-blue-700"
+          >
+            📂 Daftar Surat
+          </a>
+          <a
+            href="monitoring.html"
+            class="whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-medium text-stone-600 transition hover:bg-[#faf6ef] hover:text-blue-700"
+          >
+            📊 Monitoring Arsip
+          </a>
+          <a
+            href="diskusi.html"
+            class="whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-medium text-stone-600 transition hover:bg-[#faf6ef] hover:text-blue-700"
+          >
+            💬 Ruang Rapat Online
+          </a>
+          <a
+            href="pengaturan.html"
+            class="whitespace-nowrap rounded-2xl border border-amber-200 bg-amber-100/75 px-3.5 py-2.5 text-sm font-bold text-amber-950 transition md:mt-3"
+          >
+            ⚙️ Pengaturan Pejabat
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Konten Utama -->
+      <main class="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-6xl">
+          <header
+            class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"
+          >
+            <div>
+              <span
+                class="inline-block rounded-full border border-amber-200 bg-amber-100/80 px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-amber-900"
+              >
+                Administrasi & Akun Pegawai
+              </span>
+              <h1
+                class="mt-2 text-2xl font-extrabold tracking-tight text-stone-900 sm:text-3xl"
+              >
+                Pengaturan Pejabat & Akun Login
+              </h1>
+              <p class="mt-1 text-sm text-stone-500">
+                Kelola profil pejabat serta perbarui username dan password akun
+                pegawai secara terpusat.
+              </p>
+            </div>
+          </header>
+
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+            <!-- Panel Kiri: Edit Data Pejabat -->
+            <section
+              class="tactile-surface h-fit rounded-3xl p-6 lg:col-span-4"
+            >
+              <h2
+                class="mb-4 border-b border-[#ece3d1] pb-2.5 text-lg font-extrabold text-stone-900"
+              >
+                Edit Data Pejabat
+              </h2>
+
+              <form id="formEditPejabat" class="space-y-4">
+                <input type="hidden" id="editId" />
+
+                <div>
+                  <label
+                    class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+                  >
+                    Jabatan
+                  </label>
+                  <input
+                    type="text"
+                    id="editJabatan"
+                    readonly
+                    class="w-full cursor-not-allowed rounded-2xl border border-[#e6decb] bg-[#f1ece1] px-3.5 py-2.5 text-sm text-stone-500"
+                  />
+                  <span class="mt-1 block text-[11px] text-stone-400"
+                    >Jabatan tidak bisa diubah.</span
+                  >
+                </div>
+
+                <div>
+                  <label
+                    for="editNama"
+                    class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+                  >
+                    Nama Lengkap Pejabat
+                  </label>
+                  <input
+                    type="text"
+                    id="editNama"
+                    required
+                    class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800 transition"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    for="editWa"
+                    class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+                  >
+                    Nomor WhatsApp
+                  </label>
+                  <input
+                    type="text"
+                    id="editWa"
+                    required
+                    placeholder="Contoh: 628123456789"
+                    class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800 transition"
+                  />
+                  <span class="mt-1 block text-[11px] text-stone-400"
+                    >Awali dengan 62 (tanpa 0, tanpa spasi).</span
+                  >
+                </div>
+
+                <button
+                  type="submit"
+                  id="btnSimpan"
+                  disabled
+                  class="mt-2 w-full rounded-2xl bg-stone-300 px-4 py-3 text-sm font-bold text-stone-600 transition"
+                >
+                  Pilih Pegawai di Tabel ➡️
+                </button>
+              </form>
+            </section>
+
+            <!-- Panel Kanan: Daftar Pegawai & Kelola Akun -->
+            <section class="tactile-surface rounded-3xl p-6 lg:col-span-8">
+              <div
+                class="mb-4 flex flex-col gap-2 border-b border-[#ece3d1] pb-3 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div>
+                  <h2 class="text-lg font-extrabold text-stone-900">
+                    Daftar Pegawai & Akun
+                  </h2>
+                  <p class="text-xs text-stone-500">
+                    Super Admin dapat memperbarui username dan password akun
+                    pegawai kapan saja.
+                  </p>
+                </div>
+                <span
+                  id="infoHakAkses"
+                  class="rounded-full bg-[#faf6ef] border border-[#e6decb] px-3 py-1 text-[11px] font-bold text-stone-600"
+                >
+                  Memeriksa hak akses...
+                </span>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full border-collapse text-left">
+                  <thead>
+                    <tr
+                      class="border-b border-[#e6decb] bg-[#faf6ef] text-xs font-bold uppercase tracking-wider text-stone-500"
+                    >
+                      <th class="p-3 rounded-tl-2xl">Pegawai & Jabatan</th>
+                      <th class="p-3">Username</th>
+                      <th class="p-3">No. WhatsApp</th>
+                      <th class="p-3 rounded-tr-2xl text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    id="tabelPejabat"
+                    class="divide-y divide-[#f0e9da] text-sm"
+                  >
+                    <tr>
+                      <td colspan="4" class="p-6 text-center text-stone-500">
+                        ⏳ Memuat data pegawai...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal Ubah Username & Password Pegawai (Khusus Super Admin) -->
+    <div
+      id="modalUbahAkun"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-stone-900/45 p-4"
+    >
+      <div
+        class="tactile-surface w-full max-w-md rounded-3xl p-6 text-stone-800"
+      >
+        <div
+          class="mb-4 flex items-center justify-between border-b border-[#ece3d1] pb-3"
+        >
+          <div>
+            <span
+              class="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-900"
+            >
+              Super Admin
+            </span>
+            <h2 class="mt-1 text-lg font-extrabold text-stone-900">
+              Ubah Username & Password
+            </h2>
+          </div>
+          <button
+            type="button"
+            onclick="tutupModalAkun()"
+            class="rounded-xl px-2.5 py-1 text-stone-400 hover:bg-[#faf6ef] hover:text-stone-700"
+          >
+            ✕
+          </button>
+        </div>
+
+        <p
+          id="infoTargetPegawai"
+          class="mb-4 rounded-2xl border border-[#e6decb] bg-[#faf6ef] px-3.5 py-2.5 text-xs font-semibold text-stone-700"
+        >
+          Pegawai: -
+        </p>
+
+        <form id="formUbahAkun" class="space-y-4">
+          <input type="hidden" id="targetUserId" />
+
+          <div>
+            <label
+              for="inputUsernameBaru"
+              class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+            >
+              Username Login
+            </label>
+            <input
+              type="text"
+              id="inputUsernameBaru"
+              required
+              placeholder="Contoh: budi.staf"
+              class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800 transition"
+            />
+          </div>
+
+          <div>
+            <label
+              for="inputPasswordBaru"
+              class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+            >
+              Password / Kode Akses Baru
+            </label>
+            <input
+              type="password"
+              id="inputPasswordBaru"
+              placeholder="Kosongkan jika tidak ingin mengganti password"
+              class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800 transition"
+            />
+            <p class="mt-1 text-[11px] text-stone-500">
+              Jika dikosongkan, password lama pegawai tetap dipakai.
+            </p>
+          </div>
+
+          <div class="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              onclick="tutupModalAkun()"
+              class="rounded-2xl border border-[#dfd5c0] bg-[#faf6ef] px-4 py-2 text-xs font-bold text-stone-700 hover:bg-[#f2eadb]"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              id="btnSimpanAkun"
+              class="rounded-2xl bg-blue-700 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-blue-800"
+            >
+              Simpan Perubahan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const supabaseUrl = "https://gfxqowoohdccbwfubbwn.supabase.co";
+      const supabaseKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmeHFvd29vaGRjY2J3ZnViYnduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MDc2OTgsImV4cCI6MjA4OTk4MzY5OH0.kkVVDqkSVr6mhoz5oIhObFpbsGILtfwL2Jkv0pcW1ow";
+      const supabaseClient = window.supabase.createClient(
+        supabaseUrl,
+        supabaseKey,
+      );
+
+      const sesiAktif = JSON.parse(
+        localStorage.getItem("pegawaiAktifKelurahan") || "null",
+      );
+      const peranAktif = (
+        sesiAktif?.role ||
+        localStorage.getItem("hakAksesKelurahan") ||
+        ""
+      ).toLowerCase();
+      const isSuperAdmin =
+        peranAktif === "superadmin" || peranAktif === "super_admin";
+
+      if (!peranAktif) {
+        window.location.href = "login.html";
+      }
+
+      const badgePengguna = document.getElementById("badgePenggunaAktif");
+      if (badgePengguna) {
+        badgePengguna.textContent = sesiAktif?.nama
+          ? `${sesiAktif.nama} · ${sesiAktif.jabatan || peranAktif}`
+          : `Peran: ${peranAktif}`;
+      }
+
+      const infoHakAkses = document.getElementById("infoHakAkses");
+      if (infoHakAkses) {
+        infoHakAkses.textContent = isSuperAdmin
+          ? "👑 Mode Super Admin: Bisa ubah akun"
+          : "🔒 Hanya Super Admin yang bisa ubah akun";
+      }
+
+      function escapeHtml(val) {
+        const div = document.createElement("div");
+        div.textContent = val ?? "";
+        return div.innerHTML;
+      }
+
+      async function loadPejabat() {
+        const wadahTabel = document.getElementById("tabelPejabat");
+        try {
+          const { data, error } = await supabaseClient
+            .from("users")
+            .select("id, nama, jabatan, role, no_wa, username")
+            .order("id", { ascending: true });
+
+          if (error) throw error;
+          wadahTabel.innerHTML = "";
+
+          if (!data || !data.length) {
+            wadahTabel.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-stone-500">Belum ada data pegawai.</td></tr>`;
+            return;
+          }
+
+          data.forEach((pejabat) => {
+            const aksiAkun = isSuperAdmin
+              ? `<button
+                 type="button"
+                 onclick='bukaModalAkun(${JSON.stringify({
+                   id: pejabat.id,
+                   nama: pejabat.nama,
+                   jabatan: pejabat.jabatan,
+                   role: pejabat.role,
+                   username: pejabat.username || "",
+                 })})'
+                 class="rounded-xl border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-900 hover:bg-amber-100 transition"
+               >
+                 🔑 Akun
+               </button>`
+              : "";
+
+            wadahTabel.innerHTML += `
+            <tr class="transition hover:bg-[#faf6ef]/70">
+              <td class="p-3">
+                <p class="font-bold text-stone-900">${escapeHtml(pejabat.nama)}</p>
+                <p class="text-xs text-stone-500">${escapeHtml(pejabat.jabatan || pejabat.role || "-")}</p>
+              </td>
+              <td class="p-3">
+                <span class="rounded-lg bg-[#faf6ef] border border-[#e6decb] px-2.5 py-1 text-xs font-semibold text-stone-700">
+                  ${escapeHtml(pejabat.username || "-")}
+                </span>
+              </td>
+              <td class="p-3 font-medium text-emerald-700">${escapeHtml(pejabat.no_wa || "-")}</td>
+              <td class="p-3 text-center">
+                <div class="inline-flex items-center justify-center gap-1.5">
+                  <button
+                    type="button"
+                    onclick="siapkanEdit('${escapeHtml(pejabat.id)}', '${escapeHtml(pejabat.nama)}', '${escapeHtml(pejabat.jabatan || "")}', '${escapeHtml(pejabat.no_wa || "")}')"
+                    class="rounded-xl bg-blue-50 border border-blue-200 px-2.5 py-1 text-xs font-bold text-blue-700 hover:bg-blue-100 transition"
+                  >
+                    ✏️ Profil
+                  </button>
+                  ${aksiAkun}
+                </div>
+              </td>
+            </tr>
+          `;
+          });
+        } catch (err) {
+          console.error("Gagal memuat pegawai:", err);
+          wadahTabel.innerHTML = `<tr><td colspan="4" class="p-6 text-center font-semibold text-red-600">Gagal memuat data pegawai.</td></tr>`;
+        }
+      }
+
+      function siapkanEdit(id, nama, jabatan, wa) {
+        document.getElementById("editId").value = id;
+        document.getElementById("editJabatan").value = jabatan;
+        document.getElementById("editNama").value = nama;
+        document.getElementById("editWa").value = wa;
+
+        const btn = document.getElementById("btnSimpan");
+        btn.disabled = false;
+        btn.className =
+          "mt-2 w-full rounded-2xl bg-blue-700 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-blue-800 transition";
+        btn.innerHTML = "💾 Simpan Perubahan";
+      }
+
+      document
+        .getElementById("formEditPejabat")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const btn = document.getElementById("btnSimpan");
+          btn.innerHTML = "⏳ Menyimpan...";
+          btn.disabled = true;
+
+          const id = document.getElementById("editId").value;
+          const namaBaru = document.getElementById("editNama").value.trim();
+          const waBaru = document.getElementById("editWa").value.trim();
+
+          try {
+            const { error } = await supabaseClient
+              .from("users")
+              .update({ nama: namaBaru, no_wa: waBaru })
+              .eq("id", id);
+
+            if (error) throw error;
+
+            alert("Data pejabat berhasil diperbarui! ✅");
+            document.getElementById("formEditPejabat").reset();
+            btn.disabled = true;
+            btn.className =
+              "mt-2 w-full rounded-2xl bg-stone-300 px-4 py-3 text-sm font-bold text-stone-600 transition";
+            btn.innerHTML = "Pilih Pegawai di Tabel ➡️";
+
+            await loadPejabat();
+          } catch (err) {
+            console.error("Gagal memperbarui profil:", err);
+            alert("Gagal memperbarui data pejabat.");
+            btn.innerHTML = "💾 Simpan Perubahan";
+            btn.disabled = false;
+          }
+        });
+
+      function bukaModalAkun(pegawai) {
+        if (!isSuperAdmin || !sesiAktif?.id) {
+          alert(
+            "Hanya Super Admin yang dapat mengubah username dan password pegawai.",
+          );
+          return;
+        }
+
+        document.getElementById("targetUserId").value = pegawai.id;
+        document.getElementById("infoTargetPegawai").textContent =
+          `Pegawai: ${pegawai.nama} (${pegawai.jabatan || pegawai.role})`;
+        document.getElementById("inputUsernameBaru").value =
+          pegawai.username || "";
+        document.getElementById("inputPasswordBaru").value = "";
+
+        const modal = document.getElementById("modalUbahAkun");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      }
+
+      function tutupModalAkun() {
+        const modal = document.getElementById("modalUbahAkun");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        document.getElementById("formUbahAkun").reset();
+      }
+
+      document
+        .getElementById("formUbahAkun")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          if (!isSuperAdmin || !sesiAktif?.id) {
+            alert("Akses ditolak: hanya Super Admin yang diizinkan.");
+            return;
+          }
+
+          const btn = document.getElementById("btnSimpanAkun");
+          const labelAsli = btn.textContent;
+          btn.disabled = true;
+          btn.textContent = "Menyimpan...";
+
+          const targetId = Number(
+            document.getElementById("targetUserId").value,
+          );
+          const usernameBaru = document
+            .getElementById("inputUsernameBaru")
+            .value.trim();
+          const passwordBaru =
+            document.getElementById("inputPasswordBaru").value;
+
+          const { error } = await supabaseClient.rpc("update_akun_pegawai", {
+            p_actor_id: Number(sesiAktif.id),
+            p_target_user_id: targetId,
+            p_username: usernameBaru,
+            p_password_baru: passwordBaru.trim() ? passwordBaru : null,
+          });
+
+          btn.disabled = false;
+          btn.textContent = labelAsli;
+
+          if (error) {
+            alert("❌ Gagal memperbarui akun: " + error.message);
+            return;
+          }
+
+          alert("✅ Username dan/atau password pegawai berhasil diperbarui.");
+          tutupModalAkun();
+          await loadPejabat();
+        });
+
+      function keluarSistem() {
+        localStorage.removeItem("hakAksesKelurahan");
+        localStorage.removeItem("pegawaiAktifKelurahan");
+        window.location.href = "login.html";
+      }
+
+      window.addEventListener("load", loadPejabat);
+    </script>
+  </body>
+</html>

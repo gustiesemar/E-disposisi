@@ -1,0 +1,1220 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ruang Rapat Online - E-DISON Sondakan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f6f2ea;
+        background-image: radial-gradient(
+          circle at top right,
+          #fff9ee 0%,
+          #f6f2ea 55%,
+          #ede6d8 100%
+        );
+      }
+      .tactile-surface {
+        background: #fffdf9;
+        border: 1px solid #e6decb;
+        box-shadow:
+          0 12px 28px -12px rgba(87, 68, 42, 0.12),
+          0 2px 6px rgba(87, 68, 42, 0.05);
+      }
+      .tactile-field {
+        background: #faf6ef;
+        border: 1.5px solid #dfd5c0;
+        box-shadow: inset 0 1px 2px rgba(87, 68, 42, 0.05);
+      }
+      .tactile-field:focus {
+        background: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+        outline: none;
+      }
+      .tactile-pill {
+        background: #faf6ef;
+        border: 1px solid #e6decb;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col text-stone-800">
+    <!-- Header / Navbar Soft Tactile -->
+    <nav
+      class="sticky top-0 z-20 border-b border-[#e6decb] bg-[#fffdf9]/95 backdrop-blur-sm shadow-sm"
+    >
+      <div
+        class="mx-auto flex max-w-screen-2xl items-center justify-between px-4 py-3 sm:px-6"
+      >
+        <a href="monitoring.html" class="flex items-center gap-3">
+          <div
+            class="rounded-full border border-[#dfd5c0] bg-[#f3ece0] p-0.5 shadow-sm"
+          >
+            <img
+              src="logo_kelurahan.png"
+              alt="Logo Kelurahan Sondakan"
+              class="h-10 w-10 rounded-full object-cover"
+            />
+          </div>
+          <div>
+            <p class="text-lg font-extrabold tracking-tight text-stone-900">
+              E-DISON
+            </p>
+            <p class="text-[11px] font-semibold text-blue-700">
+              Kelurahan Sondakan
+            </p>
+          </div>
+        </a>
+
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <span
+            id="badgePenggunaAktif"
+            class="tactile-pill hidden rounded-full px-3.5 py-1.5 text-xs font-bold text-stone-700 sm:inline-flex items-center gap-1.5"
+          >
+            Memuat akun...
+          </span>
+          <button
+            type="button"
+            onclick="keluarSistem()"
+            class="rounded-2xl bg-red-500 hover:bg-red-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition"
+          >
+            Keluar 🚪
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      class="mx-auto flex w-full max-w-screen-2xl flex-1 flex-col md:flex-row"
+    >
+      <!-- Sidebar Soft Tactile -->
+      <aside
+        class="border-b border-[#e6decb] bg-[#fffdf9] p-3 md:w-64 md:border-b-0 md:border-r md:p-4"
+      >
+        <p
+          class="mb-2 px-3 text-[11px] font-bold uppercase tracking-wider text-stone-400"
+        >
+          Menu Utama
+        </p>
+        <nav
+          class="flex gap-2 overflow-x-auto md:flex-col"
+          aria-label="Navigasi utama"
+        >
+          <a
+            href="index.html"
+            id="menuInput"
+            class="whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-medium text-stone-600 transition hover:bg-[#faf6ef] hover:text-blue-700"
+          >
+            📥 Input Surat Masuk
+          </a>
+          <a
+            href="daftar-surat.html"
+            id="menuDaftar"
+            class="whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-medium text-stone-600 transition hover:bg-[#faf6ef] hover:text-blue-700"
+          >
+            📂 Daftar Surat
+          </a>
+          <a
+            href="monitoring.html"
+            id="menuMonitoring"
+            class="whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-medium text-stone-600 transition hover:bg-[#faf6ef] hover:text-blue-700"
+          >
+            📊 Monitoring Arsip
+          </a>
+          <a
+            href="diskusi.html"
+            id="menuDiskusi"
+            class="whitespace-nowrap rounded-2xl border border-blue-200 bg-blue-50/90 px-3.5 py-2.5 text-sm font-bold text-blue-800 transition"
+          >
+            💬 Ruang Rapat Online
+          </a>
+          <a
+            href="pengaturan.html"
+            id="menuPengaturan"
+            class="whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-medium text-stone-600 transition hover:bg-[#faf6ef] hover:text-blue-700 md:mt-3"
+          >
+            ⚙️ Pengaturan Pejabat
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Konten Utama -->
+      <main class="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-6xl space-y-6">
+          <header
+            class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
+          >
+            <div>
+              <span
+                class="inline-block rounded-full border border-blue-200 bg-blue-50 px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-blue-800"
+              >
+                Koordinasi Program & Kendala Kerja
+              </span>
+              <h1
+                class="mt-2 text-2xl font-extrabold tracking-tight text-stone-900 sm:text-3xl"
+              >
+                Ruang Rapat Online
+              </h1>
+              <p class="mt-1 text-sm text-stone-500">
+                Klik salah satu topik di daftar diskusi untuk membuka detail
+                pembahasan, atau unduh laporan PDF untuk topik yang sudah
+                selesai.
+              </p>
+            </div>
+            <button
+              type="button"
+              onclick="bukaModalTopikBaru()"
+              class="rounded-2xl bg-blue-700 hover:bg-blue-800 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition whitespace-nowrap"
+            >
+              + Buat Topik Baru
+            </button>
+          </header>
+
+          <!-- Filter & Pencarian -->
+          <section class="tactile-surface rounded-3xl p-4 sm:p-5">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div>
+                <label
+                  for="filterKategori"
+                  class="mb-1 block text-[11px] font-bold uppercase tracking-wider text-stone-500"
+                >
+                  Kategori Topik
+                </label>
+                <select
+                  id="filterKategori"
+                  onchange="renderDaftarTopik()"
+                  class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800"
+                >
+                  <option value="semua">Semua Kategori</option>
+                  <option value="Program Kerja">🔵 Program Kerja</option>
+                  <option value="Masalah Kerja">🟠 Masalah Kerja</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  for="filterStatus"
+                  class="mb-1 block text-[11px] font-bold uppercase tracking-wider text-stone-500"
+                >
+                  Status Topik
+                </label>
+                <select
+                  id="filterStatus"
+                  onchange="renderDaftarTopik()"
+                  class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800"
+                >
+                  <option value="semua">Semua Status</option>
+                  <option value="Aktif">Aktif</option>
+                  <option value="Selesai">Selesai</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  for="cariTopik"
+                  class="mb-1 block text-[11px] font-bold uppercase tracking-wider text-stone-500"
+                >
+                  Cari Judul / Ringkasan
+                </label>
+                <input
+                  type="text"
+                  id="cariTopik"
+                  oninput="renderDaftarTopik()"
+                  placeholder="Ketik kata kunci..."
+                  class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800"
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- Grid Daftar Topik & Ruang Obrolan (Default: hanya Daftar Topik tampil penuh) -->
+          <div
+            id="gridUtamaDiskusi"
+            class="grid grid-cols-1 gap-6 lg:grid-cols-12"
+          >
+            <!-- Daftar Topik -->
+            <section
+              id="kolomDaftarTopik"
+              class="tactile-surface rounded-3xl p-5 lg:col-span-12 transition-all"
+            >
+              <div
+                class="mb-3 flex items-center justify-between border-b border-[#ece3d1] pb-2.5"
+              >
+                <h2 class="text-base font-extrabold text-stone-900">
+                  Daftar Topik Diskusi
+                </h2>
+                <span
+                  id="infoJumlahTopik"
+                  class="text-xs font-semibold text-stone-400"
+                >
+                  Memuat...
+                </span>
+              </div>
+              <div
+                id="daftarTopik"
+                class="space-y-3 max-h-[620px] overflow-y-auto pr-1"
+              >
+                <p class="py-8 text-center text-sm text-stone-500">
+                  ⏳ Memuat topik diskusi...
+                </p>
+              </div>
+            </section>
+
+            <!-- Detail Topik & Obrolan (Tersembunyi secara default sampai topik diklik) -->
+            <section
+              id="kolomDetailTopik"
+              class="tactile-surface hidden rounded-3xl p-6 lg:col-span-7 flex-col justify-between min-h-[480px]"
+            >
+              <div id="panelDetailTopik"></div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal Buat Topik Baru -->
+    <div
+      id="modalTopikBaru"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-stone-900/45 p-4"
+    >
+      <div
+        class="tactile-surface w-full max-w-lg rounded-3xl p-6 text-stone-800"
+      >
+        <div
+          class="mb-4 flex items-center justify-between border-b border-[#ece3d1] pb-3"
+        >
+          <h2 class="text-lg font-extrabold text-stone-900">
+            Buat Topik Diskusi Baru
+          </h2>
+          <button
+            type="button"
+            onclick="tutupModalTopikBaru()"
+            class="rounded-xl px-2.5 py-1 text-stone-400 hover:bg-[#faf6ef] hover:text-stone-700"
+          >
+            ✕
+          </button>
+        </div>
+        <form id="formTopikBaru" class="space-y-4">
+          <div>
+            <label
+              for="baruJudul"
+              class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+              >Judul Topik</label
+            >
+            <input
+              type="text"
+              id="baruJudul"
+              required
+              placeholder="Contoh: Persiapan Musrenbang Kelurahan"
+              class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm"
+            />
+          </div>
+          <div>
+            <label
+              for="baruKategori"
+              class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+              >Kategori</label
+            >
+            <select
+              id="baruKategori"
+              class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm"
+            >
+              <option value="Program Kerja">Program Kerja</option>
+              <option value="Masalah Kerja">Masalah Kerja</option>
+            </select>
+          </div>
+          <div>
+            <label
+              for="baruRingkasan"
+              class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+              >Ringkasan Pembahasan</label
+            >
+            <textarea
+              id="baruRingkasan"
+              rows="3"
+              placeholder="Tuliskan konteks atau tujuan topik..."
+              class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm"
+            ></textarea>
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              onclick="tutupModalTopikBaru()"
+              class="rounded-2xl border border-[#dfd5c0] bg-[#faf6ef] px-4 py-2 text-xs font-bold text-stone-700"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              class="rounded-2xl bg-blue-700 hover:bg-blue-800 px-4 py-2 text-xs font-bold text-white"
+            >
+              Simpan Topik
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Edit Topik -->
+    <div
+      id="modalEditTopik"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-stone-900/45 p-4"
+    >
+      <div
+        class="tactile-surface w-full max-w-lg rounded-3xl p-6 text-stone-800"
+      >
+        <div
+          class="mb-4 flex items-center justify-between border-b border-[#ece3d1] pb-3"
+        >
+          <div>
+            <span
+              class="inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-900"
+            >
+              Perbarui Topik
+            </span>
+            <h2 class="mt-1 text-lg font-extrabold text-stone-900">
+              Edit Topik Diskusi
+            </h2>
+          </div>
+          <button
+            type="button"
+            onclick="tutupModalEditTopik()"
+            class="rounded-xl px-2.5 py-1 text-stone-400 hover:bg-[#faf6ef] hover:text-stone-700"
+          >
+            ✕
+          </button>
+        </div>
+
+        <form id="formEditTopik" class="space-y-4">
+          <input type="hidden" id="editTopikId" />
+
+          <div>
+            <label
+              for="editTopikJudul"
+              class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+            >
+              Judul Topik
+            </label>
+            <input
+              type="text"
+              id="editTopikJudul"
+              required
+              class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div>
+              <label
+                for="editTopikKategori"
+                class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+              >
+                Kategori
+              </label>
+              <select
+                id="editTopikKategori"
+                class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800"
+              >
+                <option value="Program Kerja">Program Kerja</option>
+                <option value="Masalah Kerja">Masalah Kerja</option>
+              </select>
+            </div>
+
+            <div>
+              <label
+                for="editTopikStatus"
+                class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+              >
+                Status
+              </label>
+              <select
+                id="editTopikStatus"
+                class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800"
+              >
+                <option value="Aktif">Aktif</option>
+                <option value="Selesai">Selesai</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="editTopikRingkasan"
+              class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+            >
+              Ringkasan Pembahasan
+            </label>
+            <textarea
+              id="editTopikRingkasan"
+              rows="3"
+              class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800"
+            ></textarea>
+          </div>
+
+          <div>
+            <label
+              for="editTopikKesimpulan"
+              class="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-600"
+            >
+              Kesimpulan / Keputusan Akhir
+            </label>
+            <textarea
+              id="editTopikKesimpulan"
+              rows="2"
+              placeholder="Catatan kesimpulan atau arahan..."
+              class="tactile-field w-full rounded-2xl px-3.5 py-2.5 text-sm text-stone-800"
+            ></textarea>
+          </div>
+
+          <div class="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              onclick="tutupModalEditTopik()"
+              class="rounded-2xl border border-[#dfd5c0] bg-[#faf6ef] px-4 py-2 text-xs font-bold text-stone-700 hover:bg-[#f2eadb]"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              id="btnSimpanEditTopik"
+              class="rounded-2xl bg-blue-700 hover:bg-blue-800 px-4 py-2 text-xs font-bold text-white shadow-sm"
+            >
+              Simpan Perubahan Topik
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script>
+      const supabaseUrl = "https://gfxqowoohdccbwfubbwn.supabase.co";
+      const supabaseKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmeHFvd29vaGRjY2J3ZnViYnduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MDc2OTgsImV4cCI6MjA4OTk4MzY5OH0.kkVVDqkSVr6mhoz5oIhObFpbsGILtfwL2Jkv0pcW1ow";
+      const supabaseClient = window.supabase.createClient(
+        supabaseUrl,
+        supabaseKey,
+      );
+
+      const sesiAktif = JSON.parse(
+        localStorage.getItem("pegawaiAktifKelurahan") || "null",
+      );
+      const peranAktif = (
+        sesiAktif?.role ||
+        localStorage.getItem("hakAksesKelurahan") ||
+        ""
+      )
+        .trim()
+        .toLowerCase();
+
+      if (!peranAktif && !sesiAktif) {
+        window.location.href = "login.html";
+      }
+
+      const isSuperAdmin =
+        peranAktif === "superadmin" || peranAktif === "super_admin";
+
+      // Jika bukan superadmin, menu yang tampil hanya Monitoring Arsip dan Ruang Rapat Online
+      if (!isSuperAdmin) {
+        document.getElementById("menuInput")?.classList.add("hidden");
+        document.getElementById("menuDaftar")?.classList.add("hidden");
+        document.getElementById("menuPengaturan")?.classList.add("hidden");
+      }
+
+      const badgePengguna = document.getElementById("badgePenggunaAktif");
+      if (badgePengguna) {
+        badgePengguna.textContent = sesiAktif?.nama
+          ? `${sesiAktif.nama} · ${sesiAktif.jabatan || peranAktif}`
+          : `Peran: ${peranAktif}`;
+      }
+
+      let semuaTopik = [];
+      let topikAktifId = null;
+      let pesanTopikAktif = [];
+      let petaPegawai = {};
+
+      function escapeHtml(val) {
+        const div = document.createElement("div");
+        div.textContent = val ?? "";
+        return div.innerHTML;
+      }
+
+      function tampilkanModeDaftarSaja() {
+        topikAktifId = null;
+        pesanTopikAktif = [];
+
+        const kolomDaftar = document.getElementById("kolomDaftarTopik");
+        const kolomDetail = document.getElementById("kolomDetailTopik");
+
+        kolomDaftar.classList.remove("lg:col-span-5");
+        kolomDaftar.classList.add("lg:col-span-12");
+
+        kolomDetail.classList.add("hidden");
+        kolomDetail.classList.remove("flex");
+        document.getElementById("panelDetailTopik").innerHTML = "";
+
+        renderDaftarTopik();
+      }
+
+      function tampilkanModeDenganDetail() {
+        const kolomDaftar = document.getElementById("kolomDaftarTopik");
+        const kolomDetail = document.getElementById("kolomDetailTopik");
+
+        kolomDaftar.classList.remove("lg:col-span-12");
+        kolomDaftar.classList.add("lg:col-span-5");
+
+        kolomDetail.classList.remove("hidden");
+        kolomDetail.classList.add("flex");
+      }
+
+      async function muatPegawai() {
+        const { data } = await supabaseClient
+          .from("users")
+          .select("id, nama, jabatan");
+        petaPegawai = {};
+        (data || []).forEach((u) => {
+          petaPegawai[Number(u.id)] = u.jabatan
+            ? `${u.nama} (${u.jabatan})`
+            : u.nama;
+        });
+      }
+
+      async function muatTopik() {
+        const { data, error } = await supabaseClient
+          .from("topik_diskusi")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Gagal memuat topik:", error);
+          document.getElementById("daftarTopik").innerHTML =
+            `<p class="py-6 text-center text-sm font-semibold text-red-600">Gagal memuat topik diskusi.</p>`;
+          return;
+        }
+
+        semuaTopik = data || [];
+        renderDaftarTopik();
+
+        if (topikAktifId) {
+          const masihAda = semuaTopik.some(
+            (t) => Number(t.id) === Number(topikAktifId),
+          );
+          if (masihAda) {
+            await pilihTopik(topikAktifId);
+          } else {
+            tampilkanModeDaftarSaja();
+          }
+        }
+      }
+
+      function renderDaftarTopik() {
+        const kat = document.getElementById("filterKategori").value;
+        const st = document.getElementById("filterStatus").value;
+        const q = document
+          .getElementById("cariTopik")
+          .value.trim()
+          .toLowerCase();
+
+        const tersaring = semuaTopik.filter((t) => {
+          const cocokKat = kat === "semua" || t.kategori === kat;
+          const cocokSt = st === "semua" || t.status === st;
+          const teks = `${t.judul || ""} ${t.ringkasan || ""}`.toLowerCase();
+          const cocokQ = !q || teks.includes(q);
+          return cocokKat && cocokSt && cocokQ;
+        });
+
+        const infoJumlah = document.getElementById("infoJumlahTopik");
+        if (infoJumlah) {
+          infoJumlah.textContent = `${tersaring.length} topik`;
+        }
+
+        const wadah = document.getElementById("daftarTopik");
+        if (!tersaring.length) {
+          wadah.innerHTML = `<p class="py-8 text-center text-xs text-stone-400">Tidak ada topik yang cocok.</p>`;
+          return;
+        }
+
+        wadah.innerHTML = tersaring
+          .map((t) => {
+            const terpilih = Number(t.id) === Number(topikAktifId);
+            const badgeKat =
+              t.kategori === "Program Kerja"
+                ? "bg-blue-100 text-blue-800 border-blue-200"
+                : "bg-amber-100 text-amber-900 border-amber-200";
+            const pembuat = petaPegawai[Number(t.dibuat_oleh)] || "Pegawai";
+            const isSelesaiItem =
+              String(t.status || "")
+                .trim()
+                .toLowerCase() === "selesai";
+
+            return `
+            <div
+              onclick="pilihTopik(${Number(t.id)})"
+              class="cursor-pointer rounded-2xl border p-3.5 transition ${
+                terpilih
+                  ? "border-blue-400 bg-blue-50/70 shadow-sm"
+                  : "border-[#e6decb] bg-[#faf6ef] hover:bg-[#f4ede0]"
+              }"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span class="rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${badgeKat}">
+                  ${escapeHtml(t.kategori)}
+                </span>
+                <span class="text-[11px] font-bold ${isSelesaiItem ? "text-emerald-700" : "text-blue-700"}">
+                  ${isSelesaiItem ? "✅ " : ""}${escapeHtml(t.status)}
+                </span>
+              </div>
+              <p class="mt-2 text-sm font-extrabold text-stone-900">${escapeHtml(t.judul)}</p>
+              ${
+                t.ringkasan
+                  ? `<p class="mt-1 line-clamp-2 text-xs text-stone-600">${escapeHtml(t.ringkasan)}</p>`
+                  : ""
+              }
+              <div class="mt-2 flex items-center justify-between text-[11px] text-stone-400">
+                <span>Oleh: ${escapeHtml(pembuat)}</span>
+                <span class="font-semibold text-blue-700">Lihat detail →</span>
+              </div>
+            </div>
+          `;
+          })
+          .join("");
+      }
+
+      async function pilihTopik(id) {
+        const targetId = Number(id);
+        topikAktifId = targetId;
+        tampilkanModeDenganDetail();
+        renderDaftarTopik();
+
+        const topik = semuaTopik.find((t) => Number(t.id) === targetId);
+        if (!topik) {
+          tampilkanModeDaftarSaja();
+          return;
+        }
+
+        // Langsung tampilkan status transisi agar pergantian topik terasa responsif
+        document.getElementById("panelDetailTopik").innerHTML = `
+          <div class="py-16 text-center text-sm text-stone-500">
+            ⏳ Memuat detail topik "${escapeHtml(topik.judul)}"...
+          </div>
+        `;
+
+        const { data: pesanList } = await supabaseClient
+          .from("pesan_diskusi")
+          .select("*")
+          .eq("topik_id", targetId)
+          .order("created_at", { ascending: true });
+
+        // Pastikan user tidak mengklik topik lain saat request masih berjalan
+        if (Number(topikAktifId) !== targetId) return;
+
+        pesanTopikAktif = pesanList || [];
+        const pembuat = petaPegawai[Number(topik.dibuat_oleh)] || "Pegawai";
+        const isSelesai =
+          String(topik.status || "")
+            .trim()
+            .toLowerCase() === "selesai";
+
+        const htmlPesan = pesanTopikAktif.length
+          ? pesanTopikAktif
+              .map((p) => {
+                const pengirim =
+                  petaPegawai[Number(p.pengirim_id)] || "Pegawai";
+                const waktu = p.created_at
+                  ? new Date(p.created_at).toLocaleString("id-ID")
+                  : "";
+                return `
+                <div class="rounded-2xl border border-[#e6decb] bg-[#faf6ef] p-3.5">
+                  <div class="flex items-center justify-between gap-2 text-[11px]">
+                    <span class="font-bold text-stone-800">${escapeHtml(pengirim)}</span>
+                    <span class="text-stone-400">${escapeHtml(waktu)}</span>
+                  </div>
+                  <p class="mt-1.5 whitespace-pre-line text-sm text-stone-700">${escapeHtml(p.isi_pesan)}</p>
+                </div>
+              `;
+              })
+              .join("")
+          : `<p class="py-6 text-center text-xs text-stone-400">Belum ada tanggapan pada topik ini.</p>`;
+
+        const tombolUnduhPdfHTML = isSelesai
+          ? `
+            <button
+              type="button"
+              onclick="unduhLaporanPDF(${Number(topik.id)})"
+              class="rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition"
+            >
+              📄 Unduh Laporan PDF
+            </button>
+          `
+          : "";
+
+        const bagianTanggapanHTML = isSelesai
+          ? `
+            <div class="mt-5 flex flex-col gap-2.5 rounded-2xl border border-emerald-200 bg-emerald-50/80 px-4 py-3 text-xs font-semibold text-emerald-900 sm:flex-row sm:items-center sm:justify-between">
+              <span>Topik ini berstatus <span class="font-extrabold">Selesai</span>. Kolom tanggapan baru ditutup.</span>
+              <button
+                type="button"
+                onclick="unduhLaporanPDF(${Number(topik.id)})"
+                class="w-fit rounded-xl bg-emerald-700 px-3.5 py-2 text-xs font-bold text-white shadow-xs transition hover:bg-emerald-800"
+              >
+                📄 Unduh Laporan PDF
+              </button>
+            </div>
+          `
+          : `
+            <form id="formKirimPesan" onsubmit="kirimPesan(event)" class="mt-5 flex gap-2 border-t border-[#ece3d1] pt-4">
+              <input
+                type="text"
+                id="inputIsiPesan"
+                required
+                placeholder="Tulis tanggapan atau laporan progres..."
+                class="tactile-field flex-1 rounded-2xl px-3.5 py-2.5 text-sm text-stone-800"
+              />
+              <button
+                type="submit"
+                class="rounded-2xl bg-blue-700 hover:bg-blue-800 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition"
+              >
+                Kirim
+              </button>
+            </form>
+          `;
+
+        document.getElementById("panelDetailTopik").innerHTML = `
+        <div>
+          <div class="mb-3 flex items-center justify-between">
+            <button
+              type="button"
+              onclick="tampilkanModeDaftarSaja()"
+              class="inline-flex items-center gap-1.5 rounded-xl border border-[#dfd5c0] bg-[#faf6ef] px-3 py-1.5 text-xs font-bold text-stone-700 hover:bg-[#f2eadb] transition"
+            >
+              ← Kembali ke Daftar Topik
+            </button>
+          </div>
+
+          <div class="flex flex-col gap-3 border-b border-[#ece3d1] pb-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-[11px] font-bold text-blue-800">
+                  ${escapeHtml(topik.kategori)}
+                </span>
+                <span class="rounded-full border border-[#e6decb] bg-[#faf6ef] px-2.5 py-0.5 text-[11px] font-bold text-stone-700">
+                  Status: ${escapeHtml(topik.status)}
+                </span>
+              </div>
+              <h2 class="mt-2 text-xl font-extrabold text-stone-900">${escapeHtml(topik.judul)}</h2>
+              <p class="mt-0.5 text-xs text-stone-400">Dibuat oleh: ${escapeHtml(pembuat)}</p>
+            </div>
+
+            <div class="flex flex-wrap shrink-0 items-center gap-2.5">
+              ${tombolUnduhPdfHTML}
+              <button
+                type="button"
+                onclick="bukaModalEditTopik(${Number(topik.id)})"
+                class="rounded-xl border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-950 hover:bg-amber-100 transition"
+              >
+                ✏️ Edit Topik
+              </button>
+              <button
+                type="button"
+                onclick="hapusTopik(${Number(topik.id)})"
+                class="rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-red-700 hover:bg-red-100 transition"
+              >
+                🗑️ Hapus Topik
+              </button>
+            </div>
+          </div>
+
+          ${
+            topik.ringkasan
+              ? `<p class="mt-3 text-sm text-stone-600 leading-relaxed">${escapeHtml(topik.ringkasan)}</p>`
+              : ""
+          }
+
+          <div class="mt-4 rounded-2xl border border-amber-200/80 bg-[#faf6ef] p-3.5">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-amber-900">
+              Kesimpulan / Keputusan Akhir
+            </p>
+            <p class="mt-1 text-sm text-stone-700">
+              ${escapeHtml(topik.kesimpulan || "Belum ada catatan kesimpulan.")}
+            </p>
+          </div>
+
+          <div class="mt-5">
+            <h3 class="mb-2.5 text-xs font-bold uppercase tracking-wider text-stone-500">
+              Riwayat Obrolan & Tindak Lanjut
+            </h3>
+            <div id="wadahPesan" class="space-y-2.5 max-h-64 overflow-y-auto pr-1">
+              ${htmlPesan}
+            </div>
+          </div>
+        </div>
+
+        ${bagianTanggapanHTML}
+      `;
+      }
+
+      async function unduhLaporanPDF(id) {
+        const topik = semuaTopik.find((t) => Number(t.id) === Number(id));
+        if (!topik) return;
+
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+          alert("Pustaka PDF belum siap. Silakan muat ulang halaman.");
+          return;
+        }
+
+        let daftarPesan = pesanTopikAktif;
+        if (Number(topikAktifId) !== Number(id)) {
+          const { data } = await supabaseClient
+            .from("pesan_diskusi")
+            .select("*")
+            .eq("topik_id", Number(id))
+            .order("created_at", { ascending: true });
+          daftarPesan = data || [];
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4",
+        });
+
+        const marginX = 18;
+        const maxWidth = 174;
+        let y = 18;
+
+        const cekHalamanBaru = (tinggiDibutuhkan = 12) => {
+          if (y + tinggiDibutuhkan > 278) {
+            doc.addPage();
+            y = 18;
+          }
+        };
+
+        // Kop Laporan Resmi
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(13);
+        doc.text("PEMERINTAH KELURAHAN SONDAKAN", 105, y, { align: "center" });
+        y += 6;
+        doc.setFontSize(11);
+        doc.text("LAPORAN HASIL RAPAT / DISKUSI ONLINE (E-DISON)", 105, y, {
+          align: "center",
+        });
+        y += 4;
+        doc.setLineWidth(0.6);
+        doc.line(marginX, y, marginX + maxWidth, y);
+        y += 8;
+
+        const pembuat = petaPegawai[Number(topik.dibuat_oleh)] || "Pegawai";
+        const tglBuat = topik.created_at
+          ? new Date(topik.created_at).toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })
+          : "-";
+        const tglCetak = new Date().toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+        const tulisBarisInfo = (label, nilai) => {
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(10);
+          doc.text(label, marginX, y);
+          doc.setFont("helvetica", "normal");
+          const lines = doc.splitTextToSize(`: ${nilai}`, maxWidth - 42);
+          doc.text(lines, marginX + 42, y);
+          y += Math.max(6, lines.length * 5);
+        };
+
+        tulisBarisInfo("Judul Topik", topik.judul || "-");
+        tulisBarisInfo("Kategori", topik.kategori || "-");
+        tulisBarisInfo("Status", topik.status || "-");
+        tulisBarisInfo("Pembuat Topik", pembuat);
+        tulisBarisInfo("Tanggal Dibuat", tglBuat);
+        tulisBarisInfo("Tanggal Unduh", tglCetak);
+
+        y += 3;
+        cekHalamanBaru(20);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10.5);
+        doc.text("I. RINGKASAN PEMBAHASAN", marginX, y);
+        y += 5.5;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        const linesRingkasan = doc.splitTextToSize(
+          topik.ringkasan || "Tidak ada catatan ringkasan pembahasan.",
+          maxWidth,
+        );
+        linesRingkasan.forEach((line) => {
+          cekHalamanBaru(6);
+          doc.text(line, marginX, y);
+          y += 5;
+        });
+
+        y += 4;
+        cekHalamanBaru(20);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10.5);
+        doc.text("II. KESIMPULAN / KEPUTUSAN AKHIR", marginX, y);
+        y += 5.5;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        const linesKesimpulan = doc.splitTextToSize(
+          topik.kesimpulan || "Belum ada catatan kesimpulan.",
+          maxWidth,
+        );
+        linesKesimpulan.forEach((line) => {
+          cekHalamanBaru(6);
+          doc.text(line, marginX, y);
+          y += 5;
+        });
+
+        y += 4;
+        cekHalamanBaru(20);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10.5);
+        doc.text("III. RIWAYAT OBROLAN & TINDAK LANJUT", marginX, y);
+        y += 6;
+
+        if (!daftarPesan.length) {
+          doc.setFont("helvetica", "italic");
+          doc.setFontSize(10);
+          doc.text("Tidak ada catatan obrolan pada topik ini.", marginX, y);
+          y += 6;
+        } else {
+          daftarPesan.forEach((p, idx) => {
+            const pengirim = petaPegawai[Number(p.pengirim_id)] || "Pegawai";
+            const waktu = p.created_at
+              ? new Date(p.created_at).toLocaleString("id-ID")
+              : "";
+            const isiLines = doc.splitTextToSize(
+              p.isi_pesan || "-",
+              maxWidth - 4,
+            );
+
+            cekHalamanBaru(10 + isiLines.length * 5);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(9.5);
+            doc.text(`${idx + 1}. ${pengirim} (${waktu})`, marginX, y);
+            y += 4.8;
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9.5);
+            isiLines.forEach((line) => {
+              cekHalamanBaru(5);
+              doc.text(line, marginX + 4, y);
+              y += 4.8;
+            });
+            y += 2.5;
+          });
+        }
+
+        const slugJudul = String(topik.judul || "laporan-diskusi")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "")
+          .slice(0, 50);
+
+        doc.save(`laporan-diskusi-${slugJudul || topik.id}.pdf`);
+      }
+
+      function bukaModalTopikBaru() {
+        const m = document.getElementById("modalTopikBaru");
+        m.classList.remove("hidden");
+        m.classList.add("flex");
+      }
+
+      function tutupModalTopikBaru() {
+        const m = document.getElementById("modalTopikBaru");
+        m.classList.add("hidden");
+        m.classList.remove("flex");
+        document.getElementById("formTopikBaru").reset();
+      }
+
+      document
+        .getElementById("formTopikBaru")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const judul = document.getElementById("baruJudul").value.trim();
+          const kategori = document.getElementById("baruKategori").value;
+          const ringkasan =
+            document.getElementById("baruRingkasan").value.trim() || null;
+
+          const { data, error } = await supabaseClient
+            .from("topik_diskusi")
+            .insert({
+              judul,
+              kategori,
+              ringkasan,
+              status: "Aktif",
+              dibuat_oleh: sesiAktif?.id ? Number(sesiAktif.id) : null,
+            })
+            .select()
+            .single();
+
+          if (error) {
+            alert("Gagal membuat topik: " + error.message);
+            return;
+          }
+
+          tutupModalTopikBaru();
+          topikAktifId = data.id;
+          await muatTopik();
+        });
+
+      function bukaModalEditTopik(id) {
+        const topik = semuaTopik.find((t) => Number(t.id) === Number(id));
+        if (!topik) return;
+
+        document.getElementById("editTopikId").value = topik.id;
+        document.getElementById("editTopikJudul").value = topik.judul || "";
+        document.getElementById("editTopikKategori").value =
+          topik.kategori || "Program Kerja";
+        document.getElementById("editTopikStatus").value =
+          topik.status || "Aktif";
+        document.getElementById("editTopikRingkasan").value =
+          topik.ringkasan || "";
+        document.getElementById("editTopikKesimpulan").value =
+          topik.kesimpulan || "";
+
+        const m = document.getElementById("modalEditTopik");
+        m.classList.remove("hidden");
+        m.classList.add("flex");
+      }
+
+      function tutupModalEditTopik() {
+        const m = document.getElementById("modalEditTopik");
+        m.classList.add("hidden");
+        m.classList.remove("flex");
+        document.getElementById("formEditTopik").reset();
+      }
+
+      document
+        .getElementById("formEditTopik")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const id = Number(document.getElementById("editTopikId").value);
+          const judul = document.getElementById("editTopikJudul").value.trim();
+          const kategori = document.getElementById("editTopikKategori").value;
+          const status = document.getElementById("editTopikStatus").value;
+          const ringkasan =
+            document.getElementById("editTopikRingkasan").value.trim() || null;
+          const kesimpulan =
+            document.getElementById("editTopikKesimpulan").value.trim() || null;
+
+          const btn = document.getElementById("btnSimpanEditTopik");
+          const labelAsli = btn.textContent;
+          btn.disabled = true;
+          btn.textContent = "Menyimpan...";
+
+          const { error } = await supabaseClient
+            .from("topik_diskusi")
+            .update({
+              judul,
+              kategori,
+              status,
+              ringkasan,
+              kesimpulan,
+              updated_at: new Date().toISOString(),
+            })
+            .eq("id", id);
+
+          btn.disabled = false;
+          btn.textContent = labelAsli;
+
+          if (error) {
+            alert("Gagal menyimpan perubahan topik: " + error.message);
+            return;
+          }
+
+          alert("Topik berhasil diperbarui! ✅");
+          tutupModalEditTopik();
+          await muatTopik();
+        });
+
+      async function hapusTopik(id) {
+        const topik = semuaTopik.find((t) => Number(t.id) === Number(id));
+        const namaTopik = topik?.judul ? `"${topik.judul}"` : "topik ini";
+
+        const yakin = confirm(
+          `Hapus topik ${namaTopik}?\nSeluruh pesan diskusi di dalam topik ini juga akan ikut terhapus.`,
+        );
+        if (!yakin) return;
+
+        const { error } = await supabaseClient
+          .from("topik_diskusi")
+          .delete()
+          .eq("id", Number(id));
+
+        if (error) {
+          alert("Gagal menghapus topik: " + error.message);
+          return;
+        }
+
+        if (Number(topikAktifId) === Number(id)) {
+          tampilkanModeDaftarSaja();
+        }
+
+        alert("Topik berhasil dihapus! 🗑️");
+        await muatTopik();
+      }
+
+      async function kirimPesan(e) {
+        e.preventDefault();
+        if (!topikAktifId) return;
+
+        const topik = semuaTopik.find(
+          (t) => Number(t.id) === Number(topikAktifId),
+        );
+        if (
+          !topik ||
+          String(topik.status || "")
+            .trim()
+            .toLowerCase() === "selesai"
+        ) {
+          return;
+        }
+
+        const input = document.getElementById("inputIsiPesan");
+        const isi = input.value.trim();
+        if (!isi) return;
+
+        const { error } = await supabaseClient.from("pesan_diskusi").insert({
+          topik_id: topikAktifId,
+          pengirim_id: sesiAktif?.id ? Number(sesiAktif.id) : null,
+          isi_pesan: isi,
+        });
+
+        if (error) {
+          alert("Gagal mengirim pesan: " + error.message);
+          return;
+        }
+
+        input.value = "";
+        await pilihTopik(topikAktifId);
+      }
+
+      function keluarSistem() {
+        localStorage.removeItem("hakAksesKelurahan");
+        localStorage.removeItem("pegawaiAktifKelurahan");
+        window.location.href = "login.html";
+      }
+
+      window.addEventListener("load", async () => {
+        await muatPegawai();
+        await muatTopik();
+      });
+    </script>
+  </body>
+</html>

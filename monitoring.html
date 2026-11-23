@@ -1,0 +1,1388 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitoring Disposisi - E-DISON Kelurahan Sondakan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-canvas: #f6f2ea;
+        --bg-surface: #fffdf9;
+        --bg-soft: #efe9dc;
+        --text-primary: #1f2421;
+        --text-secondary: #5c635e;
+        --border-soft: #e6decb;
+        --accent-sage: #2f5d50;
+        --accent-sage-soft: #e3eee9;
+        --accent-amber: #b4691e;
+        --accent-amber-soft: #faecd9;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: var(--bg-canvas);
+        color: var(--text-primary);
+      }
+
+      .tactile-surface {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-soft);
+        box-shadow:
+          0 10px 25px -15px rgba(31, 36, 33, 0.12),
+          0 2px 6px -1px rgba(31, 36, 33, 0.04);
+      }
+
+      .tactile-field {
+        background-color: #fcfaf5;
+        border: 1px solid var(--border-soft);
+      }
+
+      .tactile-field:focus {
+        outline: none;
+        border-color: var(--accent-sage);
+        box-shadow: 0 0 0 3px rgba(47, 93, 80, 0.14);
+        background-color: #ffffff;
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <!-- Header Seragam -->
+    <nav
+      class="sticky top-0 z-30 border-b border-[#e6decb] bg-[#fffdf9]/95 px-4 py-3 backdrop-blur sm:px-6"
+    >
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-3">
+        <a
+          href="monitoring.html"
+          class="flex items-center gap-3"
+          aria-label="E-DISON, beranda monitoring"
+        >
+          <img
+            src="logo_kelurahan.png"
+            alt="Logo Kelurahan Sondakan"
+            class="h-10 w-10 rounded-2xl border border-[#e6decb] object-cover shadow-sm"
+          />
+          <div>
+            <div class="flex items-center gap-2">
+              <span
+                class="text-base font-extrabold tracking-tight text-stone-900 sm:text-lg"
+              >
+                E-DISON
+              </span>
+              <span
+                class="hidden rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 sm:inline-block"
+              >
+                Kelurahan Sondakan
+              </span>
+            </div>
+            <p class="text-[11px] text-stone-500">
+              Sistem Administrasi &amp; Disposisi Surat Masuk
+            </p>
+          </div>
+        </a>
+
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <span
+            id="badgePenggunaAktif"
+            class="hidden rounded-full border border-amber-200 bg-amber-100/80 px-3 py-1.5 text-xs font-bold text-amber-900 sm:inline-flex"
+          >
+            👤 Memuat pengguna...
+          </span>
+          <button
+            type="button"
+            onclick="keluarSistem()"
+            class="rounded-2xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-bold text-rose-700 transition hover:bg-rose-100 sm:text-sm"
+          >
+            Keluar 🚪
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="mx-auto flex w-full max-w-7xl flex-1 flex-col md:flex-row">
+      <!-- Sidebar Navigasi Seragam -->
+      <aside
+        class="flex w-full shrink-0 gap-2 overflow-x-auto border-b border-[#e6decb] bg-[#faf6ef] p-3 md:w-64 md:flex-col md:border-b-0 md:border-r md:p-5"
+      >
+        <a
+          href="index.html"
+          id="menuInput"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 transition hover:bg-[#efe9dc] hover:text-stone-900"
+        >
+          <span>📥</span>
+          <span>Input Surat Masuk</span>
+        </a>
+        <a
+          href="daftar-surat.html"
+          id="menuDaftar"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 transition hover:bg-[#efe9dc] hover:text-stone-900"
+        >
+          <span>📂</span>
+          <span>Daftar Surat</span>
+        </a>
+        <a
+          href="monitoring.html"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl border border-[#d8ccb5] bg-[#fffdf9] px-3.5 py-2.5 text-sm font-bold text-[#2f5d50] shadow-xs transition"
+        >
+          <span>📊</span>
+          <span>Monitoring Arsip</span>
+        </a>
+        <a
+          href="diskusi.html"
+          id="menuDiskusi"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 transition hover:bg-[#efe9dc] hover:text-stone-900"
+        >
+          <span>💬</span>
+          <span>Ruang Rapat Online</span>
+        </a>
+        <a
+          href="pengaturan.html"
+          id="menuPengaturan"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 transition hover:bg-[#efe9dc] hover:text-stone-900 md:mt-3 md:border-t md:border-[#e6decb] md:pt-4"
+        >
+          <span>⚙️</span>
+          <span>Pengaturan Pejabat</span>
+        </a>
+      </aside>
+
+      <!-- Konten Utama (Lebar Disamakan dengan pengaturan.html: max-w-5xl mx-auto) -->
+      <main class="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-5xl space-y-6">
+          <header
+            class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
+          >
+            <div>
+              <span
+                class="inline-block rounded-full border border-amber-200 bg-amber-100/80 px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-amber-900"
+              >
+                Pusat Kendali Surat Masuk
+              </span>
+              <h1
+                class="mt-2 text-2xl font-extrabold tracking-tight text-stone-900 sm:text-3xl"
+              >
+                Arsip &amp; Monitoring Disposisi
+              </h1>
+              <p class="mt-1 text-sm text-stone-500">
+                Pantau statistik surat, kalender agenda disposisi pejabat,
+                undangan terdekat, dan pemilahan surat.
+              </p>
+            </div>
+            <button
+              type="button"
+              onclick="unduhCSV()"
+              class="inline-flex w-fit items-center justify-center gap-2 rounded-2xl border border-[#e6decb] bg-[#fffdf9] px-4 py-2.5 text-xs font-bold text-stone-700 shadow-xs transition hover:bg-[#efe9dc] sm:text-sm"
+            >
+              <span>⇩</span>
+              <span>Unduh Hasil CSV</span>
+            </button>
+          </header>
+
+          <!-- 1. STATISTIK SURAT -->
+          <section
+            class="tactile-surface rounded-3xl p-6"
+            aria-label="Statistik surat"
+          >
+            <div
+              class="mb-4 flex items-center justify-between border-b border-[#ece3d1] pb-3"
+            >
+              <h2 class="text-lg font-extrabold text-stone-900">
+                📊 Statistik Surat
+              </h2>
+              <span class="text-xs font-semibold text-stone-400"
+                >Ringkasan Arsip</span
+              >
+            </div>
+            <div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+              <article
+                class="rounded-2xl border border-[#e6decb] bg-[#fcfaf5] p-4"
+              >
+                <p
+                  class="text-[11px] font-bold uppercase tracking-wider text-stone-500"
+                >
+                  Total Surat
+                </p>
+                <p
+                  id="totalSurat"
+                  class="mt-1.5 text-3xl font-extrabold text-stone-900"
+                >
+                  —
+                </p>
+                <p class="mt-1 text-xs text-stone-500">Dalam arsip</p>
+              </article>
+              <article
+                class="rounded-2xl border border-amber-200/80 bg-amber-50/70 p-4"
+              >
+                <p
+                  class="text-[11px] font-bold uppercase tracking-wider text-amber-800"
+                >
+                  Perlu Disposisi
+                </p>
+                <p
+                  id="totalBelum"
+                  class="mt-1.5 text-3xl font-extrabold text-amber-700"
+                >
+                  —
+                </p>
+                <p class="mt-1 text-xs text-amber-800/80">Belum ditindak</p>
+              </article>
+              <article
+                class="rounded-2xl border border-emerald-200/80 bg-emerald-50/70 p-4"
+              >
+                <p
+                  class="text-[11px] font-bold uppercase tracking-wider text-emerald-800"
+                >
+                  Sudah Disposisi
+                </p>
+                <p
+                  id="totalSudah"
+                  class="mt-1.5 text-3xl font-extrabold text-emerald-700"
+                >
+                  —
+                </p>
+                <p class="mt-1 text-xs text-emerald-800/80">Sudah diteruskan</p>
+              </article>
+              <article
+                class="rounded-2xl border border-rose-200/80 bg-rose-50/70 p-4"
+              >
+                <p
+                  class="text-[11px] font-bold uppercase tracking-wider text-rose-800"
+                >
+                  Agenda Dekat
+                </p>
+                <p
+                  id="totalAgenda"
+                  class="mt-1.5 text-3xl font-extrabold text-rose-700"
+                >
+                  —
+                </p>
+                <p class="mt-1 text-xs text-rose-800/80">4 hari ke depan</p>
+              </article>
+            </div>
+          </section>
+
+          <!-- 2. KALENDER URUTAN SEDANG & AGENDA UNDANGAN TIAP PEJABAT YANG MENDAPAT DISPOSISI -->
+          <section
+            class="tactile-surface rounded-3xl p-6"
+            aria-labelledby="kalenderTitle"
+          >
+            <div
+              class="mb-4 flex flex-col gap-3 border-b border-[#ece3d1] pb-4 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <h2
+                  id="kalenderTitle"
+                  class="text-lg font-extrabold text-stone-900"
+                >
+                  🗓️ Kalender Agenda Undangan &amp; Disposisi Pejabat
+                </h2>
+                <p class="mt-0.5 text-xs text-stone-500">
+                  Klik tanggal pada kalender untuk melihat rincian agenda
+                  undangan tiap pejabat yang mendapat disposisi.
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  onclick="geserBulanKalender(-1)"
+                  class="rounded-xl border border-[#e6decb] bg-[#fcfaf5] px-3 py-1.5 text-xs font-bold text-stone-700 transition hover:bg-[#efe9dc]"
+                >
+                  ← Bulan Lalu
+                </button>
+                <span
+                  id="labelBulanKalender"
+                  class="min-w-36 text-center text-xs font-extrabold uppercase tracking-wider text-stone-800"
+                >
+                  —
+                </span>
+                <button
+                  type="button"
+                  onclick="geserBulanKalender(1)"
+                  class="rounded-xl border border-[#e6decb] bg-[#fcfaf5] px-3 py-1.5 text-xs font-bold text-stone-700 transition hover:bg-[#efe9dc]"
+                >
+                  Bulan Depan →
+                </button>
+              </div>
+            </div>
+
+            <!-- Kalender Ukuran Sedang + Daftar Agenda per Pejabat -->
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+              <div class="lg:col-span-6">
+                <div
+                  class="rounded-2xl border border-[#e6decb] bg-[#fcfaf5] p-3.5"
+                >
+                  <div
+                    class="mb-2 grid grid-cols-7 text-center text-[11px] font-extrabold uppercase tracking-wider text-stone-400"
+                  >
+                    <div>Sen</div>
+                    <div>Sel</div>
+                    <div>Rab</div>
+                    <div>Kam</div>
+                    <div>Jum</div>
+                    <div>Sab</div>
+                    <div class="text-rose-600">Min</div>
+                  </div>
+                  <div
+                    id="gridKalender"
+                    class="grid grid-cols-7 gap-1.5 text-center text-xs"
+                  ></div>
+                  <div
+                    class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[#ece3d1] pt-2.5 text-[11px] text-stone-500"
+                  >
+                    <span class="inline-flex items-center gap-1.5">
+                      <span
+                        class="h-2.5 w-2.5 rounded-full bg-[#2f5d50]"
+                      ></span>
+                      Ada agenda terdisposisi
+                    </span>
+                    <button
+                      type="button"
+                      onclick="resetPilihanTanggalKalender()"
+                      class="font-bold text-[#2f5d50] hover:underline"
+                    >
+                      Tampilkan semua di bulan ini
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lg:col-span-6">
+                <div
+                  class="flex h-full flex-col rounded-2xl border border-[#e6decb] bg-[#fcfaf5] p-4"
+                >
+                  <div
+                    class="mb-3 flex items-center justify-between border-b border-[#ece3d1] pb-2.5"
+                  >
+                    <div>
+                      <p
+                        class="text-[11px] font-bold uppercase tracking-wider text-stone-400"
+                      >
+                        Agenda Undangan Terdisposisi
+                      </p>
+                      <h3
+                        id="judulAgendaPejabat"
+                        class="text-sm font-extrabold text-stone-900"
+                      >
+                        Per Pejabat pada Bulan Berjalan
+                      </h3>
+                    </div>
+                  </div>
+                  <div
+                    id="wadahAgendaPejabat"
+                    class="max-h-80 space-y-3 overflow-y-auto pr-1 text-xs"
+                  >
+                    <p class="text-stone-500">Memuat agenda pejabat...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. AGENDA UNDANGAN TERDEKAT SELAMA 4 HARI KEDEPAN -->
+          <section
+            class="tactile-surface rounded-3xl p-6"
+            aria-labelledby="agenda4HariTitle"
+          >
+            <div
+              class="mb-4 flex flex-col gap-2 border-b border-[#ece3d1] pb-3 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <h2
+                  id="agenda4HariTitle"
+                  class="text-lg font-extrabold text-stone-900"
+                >
+                  ⏰ Agenda Undangan Terdekat (4 Hari ke Depan)
+                </h2>
+                <p class="mt-0.5 text-xs text-stone-500">
+                  Jadwal undangan rapat/kegiatan mulai hari ini hingga 4 hari ke
+                  depan.
+                </p>
+              </div>
+              <button
+                id="tombolAgenda"
+                type="button"
+                onclick="toggleAgenda()"
+                class="hidden w-fit text-xs font-bold text-[#2f5d50] hover:underline"
+              >
+                Lihat semua
+              </button>
+            </div>
+            <div
+              id="wadahAgenda"
+              class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3"
+            >
+              <p class="text-sm text-stone-500">
+                Memuat agenda 4 hari ke depan…
+              </p>
+            </div>
+          </section>
+
+          <!-- 4. SELURUH UNDANGAN YANG BELUM DIDISPOSISI -->
+          <section
+            class="tactile-surface rounded-3xl p-6"
+            aria-labelledby="undanganBelumTitle"
+          >
+            <div
+              class="mb-4 flex items-center justify-between border-b border-[#ece3d1] pb-3"
+            >
+              <div>
+                <h2
+                  id="undanganBelumTitle"
+                  class="text-lg font-extrabold text-stone-900"
+                >
+                  📩 Seluruh Undangan yang Belum Didisposisi
+                </h2>
+                <p class="mt-0.5 text-xs text-stone-500">
+                  Seluruh surat berjenis undangan yang masih menunggu disposisi.
+                </p>
+              </div>
+              <span
+                id="badgeUndanganBelum"
+                class="rounded-full border border-rose-200 bg-rose-100/80 px-3 py-1 text-xs font-bold text-rose-800"
+              >
+                0 Undangan
+              </span>
+            </div>
+            <div id="wadahUndanganBelum" class="space-y-3">
+              <p class="text-sm text-stone-500">
+                Memuat undangan belum didisposisi…
+              </p>
+            </div>
+          </section>
+
+          <!-- PEMILAHAN ARSIP SURAT (TUJUAN DISPOSISI & BELUM DIDISPOSISI) -->
+          <section
+            class="tactile-surface rounded-3xl p-6"
+            aria-labelledby="arsipTitle"
+          >
+            <div class="border-b border-[#ece3d1] pb-5">
+              <div
+                class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end"
+              >
+                <div>
+                  <h2
+                    id="arsipTitle"
+                    class="text-xl font-extrabold text-stone-900"
+                  >
+                    🗂️ Pemilahan Arsip Surat (Tujuan Disposisi &amp; Belum
+                    Didisposisi)
+                  </h2>
+                  <p
+                    id="jumlahHasil"
+                    class="mt-1 text-xs font-semibold text-stone-500"
+                    aria-live="polite"
+                  >
+                    Memuat data…
+                  </p>
+                </div>
+
+                <div
+                  class="grid w-full gap-2 sm:grid-cols-2 lg:w-auto lg:grid-cols-4"
+                >
+                  <select
+                    id="filterStatus"
+                    onchange="saringTabel()"
+                    class="tactile-field rounded-xl px-3 py-2.5 text-xs font-semibold text-stone-800"
+                  >
+                    <option value="semua">Semua status</option>
+                    <option value="belum">Belum didisposisi</option>
+                    <option value="sudah">Sudah disposisi</option>
+                  </select>
+                  <select
+                    id="filterWaktu"
+                    onchange="saringTabel()"
+                    class="tactile-field rounded-xl px-3 py-2.5 text-xs font-semibold text-stone-800"
+                  >
+                    <option value="2bulan">2 bulan terakhir</option>
+                    <option value="bulan_ini">Bulan ini</option>
+                    <option value="bulan_lalu">Bulan lalu</option>
+                    <option value="semua_waktu">Semua waktu</option>
+                  </select>
+                  <select
+                    id="filterTujuan"
+                    onchange="saringTabel()"
+                    class="tactile-field rounded-xl px-3 py-2.5 text-xs font-semibold text-stone-800"
+                  >
+                    <option value="semua">Semua tujuan &amp; status</option>
+                  </select>
+                  <input
+                    type="search"
+                    id="inputPencarian"
+                    oninput="saringTabel()"
+                    placeholder="Cari surat atau instruksi…"
+                    class="tactile-field min-w-0 rounded-xl px-3 py-2.5 text-xs text-stone-800"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onclick="resetFilter()"
+                class="mt-3 text-xs font-bold text-[#2f5d50] hover:underline"
+              >
+                ↺ Reset filter
+              </button>
+            </div>
+
+            <!-- Ringkasan Kelompok Terpilah -->
+            <div id="wadahKelompokTerpilah" class="mt-5 space-y-5"></div>
+
+            <!-- Tampilan Mobile -->
+            <div id="kartuSurat" class="mt-5 space-y-3 md:hidden"></div>
+
+            <!-- Tampilan Tabel Desktop (Lebar Kolom Proporsional Seperti pengaturan.html) -->
+            <div class="mt-5 hidden overflow-x-auto md:block">
+              <table class="w-full border-collapse text-left text-sm">
+                <thead>
+                  <tr
+                    class="border-b border-[#e6decb] bg-[#faf6ef] text-xs font-bold uppercase tracking-wider text-stone-500"
+                  >
+                    <th class="w-5/12 rounded-tl-2xl p-3.5">Surat Masuk</th>
+                    <th class="w-3/12 p-3.5">Pemilahan / Tujuan</th>
+                    <th class="w-4/12 rounded-tr-2xl p-3.5">
+                      Instruksi / Catatan
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="tabelMonitoring"
+                  class="divide-y divide-[#f0e9da]"
+                ></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const supabaseUrl = "https://gfxqowoohdccbwfubbwn.supabase.co";
+      const supabaseKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmeHFvd29vaGRjY2J3ZnViYnduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MDc2OTgsImV4cCI6MjA4OTk4MzY5OH0.kkVVDqkSVr6mhoz5oIhObFpbsGILtfwL2Jkv0pcW1ow";
+      const supabaseClient = window.supabase.createClient(
+        supabaseUrl,
+        supabaseKey,
+      );
+
+      const peranPengguna = (localStorage.getItem("hakAksesKelurahan") || "")
+        .trim()
+        .toLowerCase();
+      let pegawaiAktif = null;
+      try {
+        pegawaiAktif = JSON.parse(
+          localStorage.getItem("pegawaiAktifKelurahan") || "null",
+        );
+      } catch (_) {
+        pegawaiAktif = null;
+      }
+
+      const isSuperAdmin =
+        peranPengguna === "super_admin" ||
+        peranPengguna === "superadmin" ||
+        (pegawaiAktif &&
+          ["super_admin", "superadmin"].includes(
+            String(pegawaiAktif.role || "")
+              .trim()
+              .toLowerCase(),
+          ));
+
+      let daftarPejabat = [];
+      let petaPejabat = {};
+      let semuaSurat = [];
+      let semuaDisposisi = [];
+      let hasilTersaring = [];
+      let agendaDitampilkanSemua = false;
+
+      const hariIniAwal = hariMulai();
+      let tahunKalender = hariIniAwal.getFullYear();
+      let bulanKalender = hariIniAwal.getMonth();
+      let tanggalTerpilihKalender = null;
+
+      if (!peranPengguna && !pegawaiAktif) {
+        window.location.href = "login.html";
+      }
+
+      function terapkanHakAksesDanIdentitas() {
+        const menuDaftar = document.getElementById("menuDaftar");
+        const menuInput = document.getElementById("menuInput");
+        const menuPengaturan = document.getElementById("menuPengaturan");
+        const badgePengguna = document.getElementById("badgePenggunaAktif");
+
+        // Menu Daftar Surat hanya tampil pada mode Super Admin
+        if (menuDaftar) {
+          menuDaftar.classList.toggle("hidden", !isSuperAdmin);
+        }
+
+        if (!isSuperAdmin) {
+          if (menuInput) menuInput.classList.add("hidden");
+          if (menuPengaturan) menuPengaturan.classList.add("hidden");
+        }
+
+        // Tampilkan nama pejabat yang mengakses pada badge header
+        const namaPejabatAktif =
+          (pegawaiAktif && (pegawaiAktif.nama || pegawaiAktif.jabatan)) ||
+          (isSuperAdmin
+            ? "Bapak Lurah"
+            : peranPengguna === "admin"
+              ? "Pejabat Kelurahan"
+              : "Pejabat");
+
+        const jabatanPejabatAktif =
+          pegawaiAktif && pegawaiAktif.jabatan
+            ? ` · ${pegawaiAktif.jabatan}`
+            : "";
+
+        if (badgePengguna) {
+          badgePengguna.textContent = `👤 ${namaPejabatAktif}${jabatanPejabatAktif}`;
+        }
+      }
+
+      terapkanHakAksesDanIdentitas();
+
+      function keluarSistem() {
+        localStorage.removeItem("hakAksesKelurahan");
+        localStorage.removeItem("pegawaiAktifKelurahan");
+        window.location.href = "login.html";
+      }
+
+      function aman(nilai) {
+        const div = document.createElement("div");
+        div.textContent = nilai ?? "";
+        return div.innerHTML;
+      }
+
+      function formatTanggalIndo(tanggal) {
+        if (!tanggal) return "Tanggal belum diisi";
+        const bagian = String(tanggal).slice(0, 10).split("-").map(Number);
+        if (bagian.length !== 3 || bagian.some(isNaN)) return String(tanggal);
+        const [tahun, bulan, hari] = bagian;
+        return new Date(tahun, bulan - 1, hari).toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+      }
+
+      function tanggalLokal(tanggal) {
+        if (!tanggal) return null;
+        const m = String(tanggal)
+          .slice(0, 10)
+          .match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (!m) return null;
+        return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+      }
+
+      function toISOKey(dateObj) {
+        const y = dateObj.getFullYear();
+        const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+        const d = String(dateObj.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+      }
+
+      function hariMulai(date = new Date()) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      }
+
+      function disposisiSurat(id) {
+        return semuaDisposisi.filter(
+          (item) => String(item.surat_id) === String(id),
+        );
+      }
+
+      function labelPejabat(pejabatId) {
+        const p = petaPejabat[String(pejabatId)];
+        if (!p) return "Pejabat Terkait";
+        return p.jabatan ? `${p.jabatan} (${p.nama})` : p.nama;
+      }
+
+      function namaTujuan(surat) {
+        return disposisiSurat(surat.id)
+          .map((item) => labelPejabat(item.pejabat_id))
+          .filter((nama, index, list) => list.indexOf(nama) === index);
+      }
+
+      function agenda4HariKedepan(surat) {
+        if (surat.jenis_surat !== "undangan") return false;
+        const tgl = tanggalLokal(surat.tgl_rapat);
+        if (!tgl) return false;
+        const mulai = hariMulai();
+        const akhir = new Date(mulai);
+        akhir.setDate(akhir.getDate() + 4);
+        return tgl >= mulai && tgl <= akhir;
+      }
+
+      function perluTindakan(surat) {
+        return (
+          agenda4HariKedepan(surat) && disposisiSurat(surat.id).length === 0
+        );
+      }
+
+      function badgeStatus(surat) {
+        if (disposisiSurat(surat.id).length) {
+          return '<span class="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700">✓ Sudah disposisi</span>';
+        }
+        return '<span class="inline-flex rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700">◷ Belum didisposisi</span>';
+      }
+
+      function renderRingkasan() {
+        const sudah = semuaSurat.filter(
+          (surat) => disposisiSurat(surat.id).length > 0,
+        ).length;
+        document.getElementById("totalSurat").textContent = semuaSurat.length;
+        document.getElementById("totalBelum").textContent =
+          semuaSurat.length - sudah;
+        document.getElementById("totalSudah").textContent = sudah;
+        document.getElementById("totalAgenda").textContent =
+          semuaSurat.filter(agenda4HariKedepan).length;
+      }
+
+      function renderKalenderDanAgendaPejabat() {
+        const grid = document.getElementById("gridKalender");
+        const labelBulan = document.getElementById("labelBulanKalender");
+        const judulPejabat = document.getElementById("judulAgendaPejabat");
+        const wadahPejabat = document.getElementById("wadahAgendaPejabat");
+
+        const awalBulan = new Date(tahunKalender, bulanKalender, 1);
+        const akhirBulan = new Date(tahunKalender, bulanKalender + 1, 0);
+        labelBulan.textContent = awalBulan.toLocaleDateString("id-ID", {
+          month: "long",
+          year: "numeric",
+        });
+
+        const undanganTerdisposisi = semuaSurat
+          .filter(
+            (s) =>
+              s.jenis_surat === "undangan" && disposisiSurat(s.id).length > 0,
+          )
+          .map((s) => {
+            const tglObj = tanggalLokal(s.tgl_rapat);
+            return {
+              surat: s,
+              tglObj,
+              isoKey: tglObj ? toISOKey(tglObj) : "",
+              disposisiList: disposisiSurat(s.id),
+            };
+          })
+          .filter((item) => item.tglObj !== null);
+
+        const setTanggalAdaAgenda = new Set(
+          undanganTerdisposisi
+            .filter(
+              (item) =>
+                item.tglObj.getFullYear() === tahunKalender &&
+                item.tglObj.getMonth() === bulanKalender,
+            )
+            .map((item) => item.isoKey),
+        );
+
+        const offsetSenin = (awalBulan.getDay() + 6) % 7;
+        const totalHari = akhirBulan.getDate();
+        const hariIniISO = toISOKey(hariMulai());
+
+        let selHTML = "";
+        for (let i = 0; i < offsetSenin; i++) {
+          selHTML += `<div class="h-10 rounded-xl bg-transparent"></div>`;
+        }
+
+        for (let tgl = 1; tgl <= totalHari; tgl++) {
+          const d = new Date(tahunKalender, bulanKalender, tgl);
+          const key = toISOKey(d);
+          const adaAgenda = setTanggalAdaAgenda.has(key);
+          const terpilih = tanggalTerpilihKalender === key;
+          const adalahHariIni = key === hariIniISO;
+
+          let kelas =
+            "relative flex h-10 flex-col items-center justify-center rounded-xl border text-xs font-bold transition ";
+          if (terpilih) {
+            kelas += "border-[#2f5d50] bg-[#2f5d50] text-white shadow-xs ";
+          } else if (adaAgenda) {
+            kelas +=
+              "border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 ";
+          } else if (adalahHariIni) {
+            kelas +=
+              "border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100 ";
+          } else {
+            kelas +=
+              "border-transparent bg-white text-stone-700 hover:bg-[#efe9dc] ";
+          }
+
+          selHTML += `
+            <button type="button" onclick="pilihTanggalKalender('${key}')" class="${kelas}">
+              <span>${tgl}</span>
+              ${adaAgenda ? `<span class="mt-0.5 h-1.5 w-1.5 rounded-full ${terpilih ? "bg-white" : "bg-[#2f5d50]"}"></span>` : ""}
+            </button>
+          `;
+        }
+        grid.innerHTML = selHTML;
+
+        const agendaBulanAtauTanggal = undanganTerdisposisi.filter((item) => {
+          if (tanggalTerpilihKalender) {
+            return item.isoKey === tanggalTerpilihKalender;
+          }
+          return (
+            item.tglObj.getFullYear() === tahunKalender &&
+            item.tglObj.getMonth() === bulanKalender
+          );
+        });
+
+        judulPejabat.textContent = tanggalTerpilihKalender
+          ? `Tanggal ${formatTanggalIndo(tanggalTerpilihKalender)}`
+          : `Bulan ${labelBulan.textContent}`;
+
+        const grupPerPejabat = new Map();
+        agendaBulanAtauTanggal.forEach(({ surat, disposisiList }) => {
+          disposisiList.forEach((disp) => {
+            const pId = String(disp.pejabat_id ?? "lainnya");
+            const namaP = labelPejabat(pId);
+            if (!grupPerPejabat.has(namaP)) {
+              grupPerPejabat.set(namaP, []);
+            }
+            grupPerPejabat.get(namaP).push({
+              surat,
+              instruksi: disp.isi_disposisi,
+            });
+          });
+        });
+
+        if (grupPerPejabat.size === 0) {
+          wadahPejabat.innerHTML = `
+            <div class="rounded-xl border border-dashed border-[#dfd5c0] bg-white p-4 text-center text-stone-500">
+              Tidak ada agenda undangan yang didisposisikan pada ${
+                tanggalTerpilihKalender ? "tanggal terpilih" : "bulan ini"
+              }.
+            </div>
+          `;
+          return;
+        }
+
+        wadahPejabat.innerHTML = Array.from(grupPerPejabat.entries())
+          .map(
+            ([namaP, daftarItem]) => `
+            <div class="rounded-xl border border-[#e6decb] bg-white p-3">
+              <div class="mb-2 flex items-center justify-between gap-2 border-b border-[#f0e9da] pb-1.5">
+                <p class="font-extrabold text-stone-900">👤 ${aman(namaP)}</p>
+                <span class="rounded-full bg-[#e3eee9] px-2 py-0.5 text-[11px] font-bold text-[#2f5d50]">
+                  ${daftarItem.length} Agenda
+                </span>
+              </div>
+              <ul class="space-y-2">
+                ${daftarItem
+                  .map(
+                    ({ surat, instruksi }) => `
+                  <li class="rounded-lg bg-[#fcfaf5] p-2.5">
+                    <p class="font-bold text-stone-800">${aman(surat.perihal || "Undangan Rapat")}</p>
+                    <p class="mt-0.5 text-[11px] font-semibold text-[#2f5d50]">
+                      ${aman(formatTanggalIndo(surat.tgl_rapat))} · ${aman(surat.jam_rapat || "-")} · ${aman(surat.tempat_rapat || "-")}
+                    </p>
+                    ${instruksi ? `<p class="mt-1 text-[11px] text-stone-600"><span class="font-bold">Disposisi:</span> ${aman(instruksi)}</p>` : ""}
+                  </li>
+                `,
+                  )
+                  .join("")}
+              </ul>
+            </div>
+          `,
+          )
+          .join("");
+      }
+
+      function pilihTanggalKalender(isoKey) {
+        tanggalTerpilihKalender =
+          tanggalTerpilihKalender === isoKey ? null : isoKey;
+        renderKalenderDanAgendaPejabat();
+      }
+
+      function resetPilihanTanggalKalender() {
+        tanggalTerpilihKalender = null;
+        renderKalenderDanAgendaPejabat();
+      }
+
+      function geserBulanKalender(delta) {
+        bulanKalender += delta;
+        if (bulanKalender < 0) {
+          bulanKalender = 11;
+          tahunKalender -= 1;
+        } else if (bulanKalender > 11) {
+          bulanKalender = 0;
+          tahunKalender += 1;
+        }
+        tanggalTerpilihKalender = null;
+        renderKalenderDanAgendaPejabat();
+      }
+
+      function renderAgenda4Hari() {
+        const wadah = document.getElementById("wadahAgenda");
+        const tombol = document.getElementById("tombolAgenda");
+        const agenda = semuaSurat
+          .filter(agenda4HariKedepan)
+          .sort((a, b) =>
+            `${a.tgl_rapat || ""} ${a.jam_rapat || ""}`.localeCompare(
+              `${b.tgl_rapat || ""} ${b.jam_rapat || ""}`,
+            ),
+          );
+
+        const ditampilkan = agendaDitampilkanSemua
+          ? agenda
+          : agenda.slice(0, 3);
+        tombol.classList.toggle("hidden", agenda.length <= 3);
+        tombol.textContent = agendaDitampilkanSemua
+          ? "Tampilkan lebih sedikit"
+          : `Lihat ${agenda.length - 3} agenda lagi`;
+
+        if (!agenda.length) {
+          wadah.innerHTML =
+            '<p class="rounded-2xl border border-dashed border-[#e6decb] bg-[#fcfaf5] p-4 text-sm text-stone-500 md:col-span-2 lg:col-span-3">Tidak ada agenda undangan dalam 4 hari ke depan.</p>';
+          return;
+        }
+
+        wadah.innerHTML = ditampilkan
+          .map((surat) => {
+            const tujuan = namaTujuan(surat);
+            const instruksi = disposisiSurat(surat.id)[0]?.isi_disposisi;
+            return `
+              <article class="flex flex-col justify-between rounded-2xl border ${
+                perluTindakan(surat)
+                  ? "border-amber-200 bg-amber-50/60"
+                  : "border-[#e6decb] bg-[#fcfaf5]"
+              } p-4">
+                <div>
+                  <div class="flex items-start justify-between gap-2">
+                    <p class="text-xs font-extrabold text-[#2f5d50]">
+                      ${aman(formatTanggalIndo(surat.tgl_rapat))} · ${aman(surat.jam_rapat || "Jam belum diisi")}
+                    </p>
+                    ${badgeStatus(surat)}
+                  </div>
+                  <h3 class="mt-2.5 text-sm font-extrabold leading-snug text-stone-900">
+                    ${aman(surat.perihal || "Tanpa perihal")}
+                  </h3>
+                  <p class="mt-1.5 text-xs text-stone-500">
+                    📍 ${aman(surat.tempat_rapat || "Tempat belum diisi")}
+                  </p>
+                </div>
+                <div class="mt-3 border-t border-[#ece3d1] pt-3 text-xs text-stone-600">
+                  ${
+                    tujuan.length
+                      ? `<p><span class="font-bold text-stone-800">Tujuan:</span> ${aman(tujuan.join(", "))}</p>
+                         <p class="mt-1 line-clamp-2"><span class="font-bold text-stone-800">Instruksi:</span> ${aman(instruksi || "-")}</p>`
+                      : '<p class="font-bold text-amber-800">Belum didisposisi — perlu ditindaklanjuti.</p>'
+                  }
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function renderUndanganBelumDisposisi() {
+        const wadah = document.getElementById("wadahUndanganBelum");
+        const badge = document.getElementById("badgeUndanganBelum");
+        const undanganBelum = semuaSurat.filter(
+          (s) =>
+            s.jenis_surat === "undangan" && disposisiSurat(s.id).length === 0,
+        );
+
+        badge.textContent = `${undanganBelum.length} Undangan`;
+
+        if (!undanganBelum.length) {
+          wadah.innerHTML =
+            '<p class="rounded-2xl border border-dashed border-[#e6decb] bg-[#fcfaf5] p-4 text-sm text-stone-500">🎉 Seluruh surat undangan sudah didisposisi.</p>';
+          return;
+        }
+
+        wadah.innerHTML = undanganBelum
+          .map(
+            (surat) => `
+            <div class="flex flex-col justify-between gap-3 rounded-2xl border border-amber-200/80 bg-[#fcfaf5] p-4 sm:flex-row sm:items-center">
+              <div class="min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border border-amber-200 bg-amber-100/80 px-2.5 py-0.5 text-[11px] font-bold text-amber-900">
+                    Undangan · Belum Disposisi
+                  </span>
+                  <span class="text-xs font-semibold text-stone-500">
+                    Masuk: ${aman(formatTanggalIndo(surat.tgl_masuk))}
+                  </span>
+                </div>
+                <h3 class="mt-1.5 text-sm font-extrabold text-stone-900">
+                  ${aman(surat.perihal || "Tanpa perihal")}
+                </h3>
+                <p class="mt-0.5 text-xs text-stone-600">
+                  Asal: <span class="font-semibold">${aman(surat.asal_surat || "-")}</span>
+                  ${
+                    surat.tgl_rapat
+                      ? ` · Jadwal: <span class="font-semibold text-[#2f5d50]">${aman(formatTanggalIndo(surat.tgl_rapat))} (${aman(surat.jam_rapat || "-")})</span>`
+                      : ""
+                  }
+                </p>
+              </div>
+              ${
+                isSuperAdmin
+                  ? `<a href="disposisi.html?id=${encodeURIComponent(surat.id)}" class="w-fit shrink-0 rounded-xl bg-[#2f5d50] px-3.5 py-2 text-xs font-bold text-white transition hover:bg-[#24493e]">
+                      📝 Disposisi
+                    </a>`
+                  : ""
+              }
+            </div>
+          `,
+          )
+          .join("");
+      }
+
+      function renderPilihanTujuan() {
+        const opsiPejabat = daftarPejabat.map((p) => labelPejabat(p.id));
+        const opsiDariData = semuaSurat.flatMap(namaTujuan);
+        const semuaTujuan = [
+          ...new Set([...opsiPejabat, ...opsiDariData]),
+        ].sort((a, b) => a.localeCompare(b, "id"));
+
+        const selectEl = document.getElementById("filterTujuan");
+        selectEl.innerHTML =
+          '<option value="semua">Semua tujuan &amp; status</option>' +
+          '<option value="__BELUM_DIDISPOSISI__">Belum didisposisi</option>' +
+          semuaTujuan
+            .map(
+              (nama) => `<option value="${aman(nama)}">${aman(nama)}</option>`,
+            )
+            .join("");
+      }
+
+      function sesuaiWaktu(surat, pilihan) {
+        if (pilihan === "semua_waktu") return true;
+        const tanggal = tanggalLokal(surat.tgl_masuk);
+        if (!tanggal) return false;
+        const sekarang = hariMulai();
+        if (pilihan === "2bulan") {
+          const batas = new Date(sekarang);
+          batas.setMonth(batas.getMonth() - 2);
+          return tanggal >= batas;
+        }
+        if (pilihan === "bulan_ini") {
+          return (
+            tanggal.getFullYear() === sekarang.getFullYear() &&
+            tanggal.getMonth() === sekarang.getMonth()
+          );
+        }
+        const bulanLalu = new Date(
+          sekarang.getFullYear(),
+          sekarang.getMonth() - 1,
+          1,
+        );
+        return (
+          tanggal.getFullYear() === bulanLalu.getFullYear() &&
+          tanggal.getMonth() === bulanLalu.getMonth()
+        );
+      }
+
+      function saringTabel() {
+        const kataKunci = document
+          .getElementById("inputPencarian")
+          .value.trim()
+          .toLocaleLowerCase("id");
+        const status = document.getElementById("filterStatus").value;
+        const waktu = document.getElementById("filterWaktu").value;
+        const tujuan = document.getElementById("filterTujuan").value;
+
+        hasilTersaring = semuaSurat.filter((surat) => {
+          const tujuanList = namaTujuan(surat);
+          const punyaDisposisi = tujuanList.length > 0;
+          const isi = [
+            surat.asal_surat,
+            surat.perihal,
+            surat.jenis_surat,
+            ...tujuanList,
+            ...disposisiSurat(surat.id).map((item) => item.isi_disposisi),
+          ]
+            .join(" ")
+            .toLocaleLowerCase("id");
+
+          const cocokStatus =
+            status === "semua" || (status === "sudah") === punyaDisposisi;
+          const cocokTujuan =
+            tujuan === "semua" ||
+            (tujuan === "__BELUM_DIDISPOSISI__"
+              ? !punyaDisposisi
+              : tujuanList.includes(tujuan));
+
+          return (
+            isi.includes(kataKunci) &&
+            cocokStatus &&
+            sesuaiWaktu(surat, waktu) &&
+            cocokTujuan
+          );
+        });
+
+        renderSurat();
+      }
+
+      function isiInstruksi(surat) {
+        const disposisi = disposisiSurat(surat.id);
+        if (!disposisi.length) {
+          return '<span class="italic text-stone-400">Belum didisposisi — menunggu arahan Lurah.</span>';
+        }
+        return `<p class="font-medium leading-relaxed text-stone-700">${aman(
+          disposisi[0].isi_disposisi || "Belum ada instruksi tertulis.",
+        )}</p>`;
+      }
+
+      function informasiSurat(surat) {
+        const dokumen = surat.link_gdrive
+          ? `<a href="${aman(surat.link_gdrive)}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex text-xs font-bold text-[#2f5d50] hover:underline">Buka dokumen ↗</a>`
+          : "";
+        return `
+          <p class="font-extrabold text-stone-900">${aman(surat.asal_surat || "Asal surat belum diisi")}</p>
+          <p class="mt-0.5 text-xs text-stone-500">${aman(formatTanggalIndo(surat.tgl_masuk))}</p>
+          <p class="mt-1.5 leading-relaxed text-stone-700">${aman(surat.perihal || "Tanpa perihal")}</p>
+          ${
+            perluTindakan(surat)
+              ? '<span class="mt-2 inline-flex rounded-full border border-rose-200 bg-rose-50 px-2.5 py-0.5 text-xs font-bold text-rose-700">! Agenda 4 hari — perlu tindakan</span>'
+              : ""
+          }
+          ${dokumen}
+        `;
+      }
+
+      function renderKelompokTerpilah() {
+        const wadahKelompok = document.getElementById("wadahKelompokTerpilah");
+        const grupMap = new Map();
+        const belumDisposisiList = [];
+
+        hasilTersaring.forEach((surat) => {
+          const tujuanList = namaTujuan(surat);
+          if (!tujuanList.length) {
+            belumDisposisiList.push(surat);
+          } else {
+            tujuanList.forEach((namaT) => {
+              if (!grupMap.has(namaT)) grupMap.set(namaT, []);
+              grupMap.get(namaT).push(surat);
+            });
+          }
+        });
+
+        const kartuGrup = [];
+        if (belumDisposisiList.length > 0) {
+          kartuGrup.push(`
+            <div class="rounded-2xl border border-amber-200/90 bg-amber-50/50 p-3.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-amber-900">
+                  ⏳ Belum Didisposisi
+                </span>
+                <span class="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-extrabold text-amber-900">
+                  ${belumDisposisiList.length} Surat
+                </span>
+              </div>
+            </div>
+          `);
+        }
+
+        grupMap.forEach((daftarS, namaT) => {
+          kartuGrup.push(`
+            <div class="rounded-2xl border border-[#e6decb] bg-[#fcfaf5] p-3.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="truncate text-xs font-extrabold text-stone-800">
+                  👤 ${aman(namaT)}
+                </span>
+                <span class="shrink-0 rounded-full bg-[#e3eee9] px-2.5 py-0.5 text-xs font-extrabold text-[#2f5d50]">
+                  ${daftarS.length} Surat
+                </span>
+              </div>
+            </div>
+          `);
+        });
+
+        wadahKelompok.innerHTML = kartuGrup.length
+          ? `<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">${kartuGrup.join("")}</div>`
+          : "";
+      }
+
+      function renderSurat() {
+        const tabel = document.getElementById("tabelMonitoring");
+        const kartu = document.getElementById("kartuSurat");
+        const jumlah = document.getElementById("jumlahHasil");
+
+        jumlah.textContent = `${hasilTersaring.length} dari ${semuaSurat.length} surat ditampilkan`;
+        renderKelompokTerpilah();
+
+        if (!hasilTersaring.length) {
+          const kosong =
+            '<div class="rounded-2xl border border-dashed border-[#e6decb] bg-[#fcfaf5] p-8 text-center text-sm text-stone-500">Tidak ada surat yang cocok dengan filter. Coba ubah kata kunci atau reset filter.</div>';
+          tabel.innerHTML =
+            '<tr><td colspan="3" class="p-6 text-center text-stone-500">Tidak ada surat yang cocok dengan filter.</td></tr>';
+          kartu.innerHTML = kosong;
+          return;
+        }
+
+        tabel.innerHTML = hasilTersaring
+          .map((surat) => {
+            const tujuan = namaTujuan(surat);
+            return `
+              <tr class="align-top transition hover:bg-[#faf6ef]">
+                <td class="w-5/12 p-4">${informasiSurat(surat)}</td>
+                <td class="w-3/12 p-4">
+                  ${badgeStatus(surat)}
+                  <p class="mt-2.5 text-xs font-semibold leading-relaxed text-stone-700">
+                    ${
+                      tujuan.length
+                        ? `Tujuan: ${aman(tujuan.join(", "))}`
+                        : '<span class="text-amber-800">Belum didisposisi</span>'
+                    }
+                  </p>
+                </td>
+                <td class="w-4/12 p-4">${isiInstruksi(surat)}</td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        kartu.innerHTML = hasilTersaring
+          .map((surat) => {
+            const tujuan = namaTujuan(surat);
+            return `
+              <article class="rounded-2xl border border-[#e6decb] bg-[#fcfaf5] p-4">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">${informasiSurat(surat)}</div>
+                  ${badgeStatus(surat)}
+                </div>
+                <div class="mt-3 border-t border-[#ece3d1] pt-3">
+                  <p class="text-[11px] font-bold uppercase tracking-wider text-stone-400">
+                    ${tujuan.length ? "Tujuan Disposisi" : "Pemilahan"}
+                  </p>
+                  <p class="mt-1 text-xs font-semibold text-stone-700">
+                    ${tujuan.length ? aman(tujuan.join(", ")) : "Belum didisposisi"}
+                  </p>
+                  <div class="mt-2.5 rounded-xl border border-[#ece3d1] bg-white p-3 text-xs">
+                    ${isiInstruksi(surat)}
+                  </div>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function resetFilter() {
+        document.getElementById("filterStatus").value = "semua";
+        document.getElementById("filterWaktu").value = "2bulan";
+        document.getElementById("filterTujuan").value = "semua";
+        document.getElementById("inputPencarian").value = "";
+        saringTabel();
+      }
+
+      function toggleAgenda() {
+        agendaDitampilkanSemua = !agendaDitampilkanSemua;
+        renderAgenda4Hari();
+      }
+
+      function csv(nilai) {
+        const teks = String(nilai ?? "").replaceAll('"', '""');
+        return `"${teks}"`;
+      }
+
+      function unduhCSV() {
+        const baris = [
+          [
+            "Tanggal masuk",
+            "Asal surat",
+            "Perihal",
+            "Status",
+            "Tujuan disposisi",
+            "Instruksi",
+            "Tautan dokumen",
+          ],
+          ...hasilTersaring.map((surat) => [
+            surat.tgl_masuk,
+            surat.asal_surat,
+            surat.perihal,
+            disposisiSurat(surat.id).length
+              ? "Sudah disposisi"
+              : "Belum didisposisi",
+            namaTujuan(surat).join(", ") || "Belum didisposisi",
+            disposisiSurat(surat.id)[0]?.isi_disposisi || "",
+            surat.link_gdrive || "",
+          ]),
+        ];
+        const blob = new Blob(
+          [
+            "\ufeff" +
+              baris.map((barisCSV) => barisCSV.map(csv).join(",")).join("\n"),
+          ],
+          { type: "text/csv;charset=utf-8;" },
+        );
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `monitoring-surat-${new Date().toISOString().slice(0, 10)}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+      }
+
+      async function loadDataMonitoring() {
+        try {
+          const [
+            { data: surat, error: errSurat },
+            { data: disposisi, error: errDisposisi },
+            { data: pejabat, error: errPejabat },
+          ] = await Promise.all([
+            supabaseClient
+              .from("surat")
+              .select("*")
+              .order("id", { ascending: false }),
+            supabaseClient.from("disposisi").select("*"),
+            supabaseClient
+              .from("users")
+              .select("id, nama, jabatan, role")
+              .neq("role", "superadmin")
+              .order("id", { ascending: true }),
+          ]);
+
+          if (errSurat) throw errSurat;
+          if (errDisposisi) throw errDisposisi;
+
+          semuaSurat = surat || [];
+          semuaDisposisi = disposisi || [];
+          daftarPejabat = errPejabat ? [] : pejabat || [];
+
+          petaPejabat = {};
+          daftarPejabat.forEach((p) => {
+            petaPejabat[String(p.id)] = p;
+          });
+
+          // Jika pegawaiAktif belum punya nama/jabatan di localStorage, lengkapi dari daftar users bila cocok
+          if (pegawaiAktif && !pegawaiAktif.nama && pegawaiAktif.id) {
+            const cocok = daftarPejabat.find(
+              (p) => String(p.id) === String(pegawaiAktif.id),
+            );
+            if (cocok) {
+              pegawaiAktif = { ...pegawaiAktif, ...cocok };
+              terapkanHakAksesDanIdentitas();
+            }
+          }
+
+          renderRingkasan();
+          renderPilihanTujuan();
+          renderKalenderDanAgendaPejabat();
+          renderAgenda4Hari();
+          renderUndanganBelumDisposisi();
+          saringTabel();
+        } catch (error) {
+          document.getElementById("wadahAgenda").innerHTML =
+            '<p class="text-sm text-rose-600">Agenda tidak dapat dimuat. Coba muat ulang halaman.</p>';
+          document.getElementById("wadahUndanganBelum").innerHTML =
+            '<p class="text-sm text-rose-600">Data undangan belum didisposisi tidak dapat dimuat.</p>';
+          document.getElementById("tabelMonitoring").innerHTML =
+            '<tr><td colspan="3" class="p-6 text-center font-medium text-rose-600">Data surat tidak dapat dimuat. Periksa koneksi lalu coba lagi.</td></tr>';
+          document.getElementById("kartuSurat").innerHTML =
+            '<p class="p-4 text-center text-sm text-rose-600">Data surat tidak dapat dimuat.</p>';
+          document.getElementById("jumlahHasil").textContent =
+            "Data tidak dapat dimuat";
+          console.error("Gagal memuat monitoring:", error);
+        }
+      }
+
+      window.addEventListener("load", loadDataMonitoring);
+    </script>
+  </body>
+</html>

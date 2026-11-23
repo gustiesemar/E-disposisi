@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <script>
+      const akses = localStorage.getItem("hakAksesKelurahan");
+      if (!akses) {
+        window.location.href = "login.html";
+      } else if (akses !== "superadmin") {
+        alert("⛔ AKSES DITOLAK! Halaman ini khusus Super Admin (Lurah).");
+        window.location.href = "monitoring.html";
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lembar Disposisi - E-DISON Kelurahan Sondakan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-canvas: #f6f2ea;
+        --bg-surface: #fffdf9;
+        --bg-soft: #efe9dc;
+        --text-primary: #1f2421;
+        --text-secondary: #5c635e;
+        --border-soft: #e6decb;
+        --accent-sage: #2f5d50;
+        --accent-sage-soft: #e3eee9;
+        --accent-amber: #b4691e;
+        --accent-amber-soft: #faecd9;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: var(--bg-canvas);
+        color: var(--text-primary);
+      }
+
+      .tactile-surface {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-soft);
+        box-shadow:
+          0 10px 25px -15px rgba(31, 36, 33, 0.12),
+          0 2px 6px -1px rgba(31, 36, 33, 0.04);
+      }
+
+      .tactile-field {
+        background-color: #fcfaf5;
+        border: 1px solid var(--border-soft);
+      }
+
+      .tactile-field:focus {
+        outline: none;
+        border-color: var(--accent-sage);
+        box-shadow: 0 0 0 3px rgba(47, 93, 80, 0.14);
+        background-color: #ffffff;
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <!-- Header Seragam -->
+    <nav
+      class="sticky top-0 z-20 border-b border-[#e6decb] bg-[#fffdf9]/95 px-4 py-3 backdrop-blur sm:px-6"
+    >
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <img
+            src="logo_kelurahan.png"
+            alt="Logo Kelurahan Sondakan"
+            class="h-10 w-10 rounded-2xl border border-[#e6decb] object-cover shadow-sm"
+          />
+          <div>
+            <div class="flex items-center gap-2">
+              <span
+                class="text-base font-extrabold tracking-tight text-stone-900 sm:text-lg"
+              >
+                E-DISON
+              </span>
+              <span
+                class="hidden rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 sm:inline-block"
+              >
+                Kelurahan Sondakan
+              </span>
+            </div>
+            <p class="text-[11px] text-stone-500">
+              Sistem Administrasi & Disposisi Surat Masuk
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <span
+            id="badgeHakAkses"
+            class="hidden rounded-full border border-amber-200 bg-amber-100/80 px-3 py-1.5 text-xs font-bold text-amber-900 sm:inline-flex"
+          >
+            👑 Mode: Super Admin
+          </span>
+          <button
+            onclick="keluarSistem()"
+            class="rounded-2xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-bold text-rose-700 transition hover:bg-rose-100 sm:text-sm"
+          >
+            Keluar 🚪
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="mx-auto flex w-full max-w-7xl flex-1 flex-col md:flex-row">
+      <!-- Sidebar Navigasi Seragam -->
+      <aside
+        class="flex w-full shrink-0 gap-2 overflow-x-auto border-b border-[#e6decb] bg-[#faf6ef] p-3 md:w-64 md:flex-col md:border-b-0 md:border-r md:p-5"
+      >
+        <a
+          href="index.html"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 transition hover:bg-[#efe9dc] hover:text-stone-900"
+        >
+          <span>📥</span>
+          <span>Input Surat Masuk</span>
+        </a>
+        <a
+          href="daftar-surat.html"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 transition hover:bg-[#efe9dc] hover:text-stone-900"
+        >
+          <span>📂</span>
+          <span>Daftar Surat</span>
+        </a>
+        <a
+          href="monitoring.html"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 transition hover:bg-[#efe9dc] hover:text-stone-900"
+        >
+          <span>📊</span>
+          <span>Monitoring Arsip</span>
+        </a>
+        <a
+          href="diskusi.html"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 transition hover:bg-[#efe9dc] hover:text-stone-900"
+        >
+          <span>💬</span>
+          <span>Ruang Rapat Online</span>
+        </a>
+        <a
+          href="pengaturan.html"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 transition hover:bg-[#efe9dc] hover:text-stone-900 md:mt-3 md:border-t md:border-[#e6decb] md:pt-4"
+        >
+          <span>⚙️</span>
+          <span>Pengaturan Pejabat</span>
+        </a>
+        <a
+          href="#"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl border border-[#d8ccb5] bg-[#fffdf9] px-3.5 py-2.5 text-sm font-bold text-[#2f5d50] shadow-xs transition"
+        >
+          <span>📝</span>
+          <span>Lembar Disposisi</span>
+        </a>
+      </aside>
+
+      <!-- Konten Utama (Lebar Disamakan dengan pengaturan.html: max-w-5xl mx-auto) -->
+      <main class="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-5xl space-y-6">
+          <header
+            class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"
+          >
+            <div>
+              <span
+                class="inline-block rounded-full border border-amber-200 bg-amber-100/80 px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-amber-900"
+              >
+                Arahan Pimpinan & Tindak Lanjut
+              </span>
+              <h1
+                class="mt-2 text-2xl font-extrabold tracking-tight text-stone-900 sm:text-3xl"
+              >
+                Lembar Disposisi Surat
+              </h1>
+              <p class="mt-1 text-sm text-stone-500">
+                Tetapkan tujuan disposisi pejabat, tulis instruksi resmi, lalu
+                kirim format disposisi vertikal ke WhatsApp.
+              </p>
+            </div>
+            <a
+              href="daftar-surat.html"
+              class="w-fit rounded-2xl border border-[#e6decb] bg-[#fffdf9] px-4 py-2 text-xs font-bold text-stone-700 transition hover:bg-[#efe9dc]"
+            >
+              ← Kembali ke Daftar Surat
+            </a>
+          </header>
+
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+            <!-- Panel Kiri: Detail Surat -->
+            <section
+              class="tactile-surface h-fit rounded-3xl p-6 lg:col-span-5"
+            >
+              <div
+                class="mb-4 flex items-center justify-between border-b border-[#ece3d1] pb-3"
+              >
+                <h2 class="text-lg font-extrabold text-stone-900">
+                  Detail Surat
+                </h2>
+                <span
+                  id="badgeJenisSurat"
+                  class="rounded-full border border-[#e6decb] bg-[#faf6ef] px-3 py-1 text-xs font-bold text-stone-600"
+                >
+                  Memuat...
+                </span>
+              </div>
+
+              <div class="space-y-4 text-sm" id="wadahDetailSurat">
+                <p class="italic text-stone-500">
+                  Sedang mengambil data surat...
+                </p>
+              </div>
+            </section>
+
+            <!-- Panel Kanan: Form Disposisi / Hasil Disposisi WA -->
+            <section
+              class="tactile-surface h-fit rounded-3xl border-t-4 border-t-[#b4691e] p-6 lg:col-span-7"
+              id="wadahFormDisposisi"
+            >
+              <div class="mb-5 border-b border-[#ece3d1] pb-4">
+                <h2 class="text-lg font-extrabold text-stone-900">
+                  Tindak Lanjut (Disposisi)
+                </h2>
+                <p class="mt-0.5 text-xs text-stone-500">
+                  Instruksi Lurah kepada pejabat terkait (selain Super Admin).
+                </p>
+              </div>
+
+              <form id="formDisposisi" class="space-y-5">
+                <input type="hidden" id="idSuratTersembunyi" />
+
+                <div>
+                  <div class="mb-2 flex items-center justify-between gap-2">
+                    <label
+                      class="block text-xs font-bold uppercase tracking-wide text-stone-600"
+                    >
+                      Teruskan / Disposisi Kepada
+                    </label>
+                    <span
+                      id="jumlahPejabatTersedia"
+                      class="text-[11px] font-semibold text-stone-400"
+                    >
+                      Memuat...
+                    </span>
+                  </div>
+                  <div
+                    id="wadahCheckboxPejabat"
+                    class="max-h-60 space-y-2 overflow-y-auto rounded-2xl border border-[#e6decb] bg-[#fcfaf5] p-3.5"
+                  >
+                    <p class="text-sm text-stone-500">
+                      ⏳ Sedang memuat daftar pejabat...
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    for="isiDisposisi"
+                    class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-stone-600"
+                  >
+                    Isi Disposisi / Instruksi Pimpinan
+                  </label>
+                  <textarea
+                    id="isiDisposisi"
+                    class="tactile-field w-full rounded-2xl p-3.5 text-sm text-stone-800 transition"
+                    rows="4"
+                    placeholder="Tuliskan arahan, tindak lanjut, atau catatan disposisi secara jelas..."
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="pt-1">
+                  <button
+                    type="submit"
+                    id="btnSubmitDisposisi"
+                    class="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#2f5d50] px-4 py-3.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-[#24493e]"
+                  >
+                    <span>Simpan & Siapkan Format WA</span>
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      const supabaseUrl = "https://gfxqowoohdccbwfubbwn.supabase.co";
+      const supabaseKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmeHFvd29vaGRjY2J3ZnViYnduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MDc2OTgsImV4cCI6MjA4OTk4MzY5OH0.kkVVDqkSVr6mhoz5oIhObFpbsGILtfwL2Jkv0pcW1ow";
+      const supabaseClient = window.supabase.createClient(
+        supabaseUrl,
+        supabaseKey,
+      );
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const suratId = urlParams.get("id");
+      let dataSuratGlobal = null;
+      let databasePejabat = {};
+
+      function formatTanggalIndo(tanggalString) {
+        if (!tanggalString) return "-";
+        return new Date(tanggalString).toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+      }
+
+      function bersihkanNomorWA(noWa) {
+        if (!noWa) return "";
+        let digits = String(noWa).replace(/\D/g, "");
+        if (digits.startsWith("0")) digits = "62" + digits.slice(1);
+        return digits;
+      }
+
+      function susunPesanVertikalWA(infoPejabat, surat, isiInstruksi) {
+        const daftarTujuanTerpilih = Array.from(
+          document.querySelectorAll('input[name="pejabat"]:checked'),
+        )
+          .map((cb) => {
+            const p = databasePejabat[cb.value];
+            return p ? `${p.jabatan} (${p.nama})` : "";
+          })
+          .filter(Boolean);
+
+        const baris = [
+          "*LEMBAR DISPOSISI RESMI*",
+          "*PEMERINTAH KELURAHAN SONDAKAN*",
+          "━━━━━━━━━━━━━━━━━━━━",
+          `Kepada Yth. : *${infoPejabat.nama}*`,
+          `Jabatan     : ${infoPejabat.jabatan || "-"}`,
+          "",
+          "Dengan hormat,",
+          "Bersama ini disampaikan disposisi surat masuk dengan rincian sebagai berikut:",
+          "",
+          "*RINCIAN SURAT MASUK*",
+          `• *Asal Surat*    : ${surat.asal_surat || "-"}`,
+          `• *Tanggal Masuk* : ${formatTanggalIndo(surat.tgl_masuk)}`,
+          `• *Jenis Surat*   : ${surat.jenis_surat === "undangan" ? "Undangan" : "Biasa"}`,
+          `• *Perihal*       : ${surat.perihal || "-"}`,
+        ];
+
+        if (surat.jenis_surat === "undangan") {
+          baris.push(
+            "",
+            "*JADWAL KEGIATAN / RAPAT*",
+            `• *Hari/Tanggal* : ${formatTanggalIndo(surat.tgl_rapat)}`,
+            `• *Pukul*         : ${surat.jam_rapat || "-"}`,
+            `• *Tempat*        : ${surat.tempat_rapat || "-"}`,
+          );
+        }
+
+        if (surat.link_gdrive) {
+          baris.push("", `*Lampiran Berkas* : ${surat.link_gdrive}`);
+        }
+
+        if (daftarTujuanTerpilih.length > 0) {
+          baris.push(
+            "",
+            "*DITERUSKAN KEPADA*",
+            ...daftarTujuanTerpilih.map((t, idx) => `  ${idx + 1}. ${t}`),
+          );
+        }
+
+        baris.push(
+          "",
+          "*INSTRUKSI / DISPOSISI LURAH*",
+          `_"${String(isiInstruksi || "").trim()}"_`,
+          "",
+          "━━━━━━━━━━━━━━━━━━━━",
+          "Mohon perhatian, koordinasi, dan tindak lanjut sesuai ketentuan yang berlaku. Atas kerja samanya diucapkan terima kasih.",
+          "",
+          "Hormat kami,",
+          "*Lurah Sondakan*",
+        );
+
+        return baris.join("\n");
+      }
+
+      async function loadDetailSurat() {
+        if (!suratId) {
+          document.getElementById("wadahDetailSurat").innerHTML =
+            '<p class="font-semibold text-rose-600">Error: ID surat tidak ditemukan.</p>';
+          return;
+        }
+
+        try {
+          const { data: surat, error: errSurat } = await supabaseClient
+            .from("surat")
+            .select("*")
+            .eq("id", suratId)
+            .single();
+
+          if (errSurat) throw errSurat;
+
+          dataSuratGlobal = surat;
+          document.getElementById("idSuratTersembunyi").value = surat.id;
+
+          const badge = document.getElementById("badgeJenisSurat");
+          if (surat.jenis_surat === "undangan") {
+            badge.className =
+              "rounded-full border border-amber-200 bg-amber-100/80 px-3 py-1 text-xs font-bold text-amber-900";
+            badge.innerText = "Undangan";
+          } else {
+            badge.className =
+              "rounded-full border border-[#e6decb] bg-[#f6f2ea] px-3 py-1 text-xs font-bold text-stone-700";
+            badge.innerText = "Biasa";
+          }
+
+          let detailHTML = `
+            <div class="rounded-2xl border border-[#ece3d1] bg-[#fcfaf5] p-3.5">
+              <p class="text-[11px] font-bold uppercase tracking-wider text-stone-400">Asal Surat</p>
+              <p class="mt-0.5 font-bold text-stone-900">${surat.asal_surat || "-"}</p>
+            </div>
+            <div class="rounded-2xl border border-[#ece3d1] bg-[#fcfaf5] p-3.5">
+              <p class="text-[11px] font-bold uppercase tracking-wider text-stone-400">Tanggal Masuk</p>
+              <p class="mt-0.5 font-semibold text-stone-800">${formatTanggalIndo(surat.tgl_masuk)}</p>
+            </div>
+            <div class="rounded-2xl border border-[#ece3d1] bg-[#fcfaf5] p-3.5">
+              <p class="text-[11px] font-bold uppercase tracking-wider text-stone-400">Perihal</p>
+              <p class="mt-0.5 font-semibold text-stone-800">${surat.perihal || "-"}</p>
+            </div>
+          `;
+
+          if (surat.link_gdrive) {
+            detailHTML += `
+              <div class="pt-1">
+                <a href="${surat.link_gdrive}" target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-xs font-bold text-rose-700 transition hover:bg-rose-100">
+                  <span>📄</span>
+                  <span>Lihat Berkas Surat (PDF / Drive)</span>
+                </a>
+              </div>
+            `;
+          }
+
+          if (surat.jenis_surat === "undangan") {
+            detailHTML += `
+              <div class="space-y-1.5 rounded-2xl border border-amber-200/80 bg-amber-50/70 p-4 text-sm">
+                <p class="border-b border-amber-200/80 pb-1.5 text-xs font-extrabold uppercase tracking-wider text-amber-900">
+                  Jadwal Rapat / Kegiatan
+                </p>
+                <p class="text-stone-700"><span class="font-semibold text-stone-500">Tanggal:</span> ${formatTanggalIndo(surat.tgl_rapat)}</p>
+                <p class="text-stone-700"><span class="font-semibold text-stone-500">Pukul:</span> ${surat.jam_rapat || "-"}</p>
+                <p class="text-stone-700"><span class="font-semibold text-stone-500">Tempat:</span> ${surat.tempat_rapat || "-"}</p>
+              </div>
+            `;
+          }
+
+          document.getElementById("wadahDetailSurat").innerHTML = detailHTML;
+
+          const { data: listPejabat, error: errPejabat } = await supabaseClient
+            .from("users")
+            .select("id, nama, jabatan, role, no_wa")
+            .neq("role", "superadmin")
+            .order("id", { ascending: true });
+
+          if (errPejabat) throw errPejabat;
+
+          const wadahCheckbox = document.getElementById("wadahCheckboxPejabat");
+          const labelJumlah = document.getElementById("jumlahPejabatTersedia");
+          databasePejabat = {};
+
+          const pejabatValid = (listPejabat || []).filter(
+            (p) => (p.role || "").toLowerCase() !== "superadmin",
+          );
+
+          if (labelJumlah) {
+            labelJumlah.textContent = `${pejabatValid.length} Pejabat`;
+          }
+
+          if (pejabatValid.length === 0) {
+            wadahCheckbox.innerHTML = `
+              <p class="text-xs text-stone-500">
+                Belum ada data pejabat (selain Super Admin) di menu Pengaturan Pejabat.
+              </p>
+            `;
+            return;
+          }
+
+          wadahCheckbox.innerHTML = pejabatValid
+            .map((p) => {
+              databasePejabat[p.id] = {
+                nama: p.nama || "Pejabat",
+                jabatan: p.jabatan || "-",
+                wa: bersihkanNomorWA(p.no_wa),
+              };
+              return `
+                <label class="flex cursor-pointer items-center gap-3 rounded-xl px-2.5 py-2 transition hover:bg-[#efe9dc]/70">
+                  <input
+                    type="checkbox"
+                    name="pejabat"
+                    value="${p.id}"
+                    class="h-4 w-4 rounded border-stone-300 text-[#2f5d50] focus:ring-[#2f5d50]"
+                  />
+                  <span class="text-sm font-semibold text-stone-800">
+                    ${p.jabatan || "Pejabat"}
+                    <span class="font-normal text-stone-500">(${p.nama || "-"})</span>
+                  </span>
+                </label>
+              `;
+            })
+            .join("");
+        } catch (err) {
+          console.error("Gagal memuat detail disposisi:", err);
+          document.getElementById("wadahDetailSurat").innerHTML =
+            '<p class="font-semibold text-rose-600">Gagal memuat data surat atau pejabat.</p>';
+        }
+      }
+
+      function salinTeksWA(elementId, btnEl) {
+        const preEl = document.getElementById(elementId);
+        if (!preEl) return;
+        navigator.clipboard.writeText(preEl.innerText).then(() => {
+          const teksAsli = btnEl.innerHTML;
+          btnEl.innerHTML = "✅ Tersalin";
+          setTimeout(() => {
+            btnEl.innerHTML = teksAsli;
+          }, 1800);
+        });
+      }
+
+      document
+        .getElementById("formDisposisi")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const btnSubmit = document.getElementById("btnSubmitDisposisi");
+          const teksTombolAwal = btnSubmit.innerHTML;
+          btnSubmit.innerHTML = "⏳ Menyimpan...";
+          btnSubmit.disabled = true;
+
+          const idSurat = document.getElementById("idSuratTersembunyi").value;
+          const isi = document.getElementById("isiDisposisi").value.trim();
+          const checkboxes = Array.from(
+            document.querySelectorAll('input[name="pejabat"]:checked'),
+          );
+
+          if (checkboxes.length === 0) {
+            alert("Pilih minimal 1 pejabat tujuan disposisi!");
+            btnSubmit.innerHTML = teksTombolAwal;
+            btnSubmit.disabled = false;
+            return;
+          }
+
+          try {
+            const dataDisposisi = checkboxes.map((cb) => ({
+              surat_id: idSurat,
+              pejabat_id: cb.value,
+              isi_disposisi: isi,
+            }));
+
+            const { error } = await supabaseClient
+              .from("disposisi")
+              .insert(dataDisposisi);
+
+            if (error) throw error;
+
+            const kartuPesanHTML = checkboxes
+              .map((cb, idx) => {
+                const info = databasePejabat[cb.value] || {
+                  nama: "Pejabat",
+                  jabatan: "-",
+                  wa: "",
+                };
+                const pesanVertikal = susunPesanVertikalWA(
+                  info,
+                  dataSuratGlobal,
+                  isi,
+                );
+                const urlWA = info.wa
+                  ? `https://wa.me/${info.wa}?text=${encodeURIComponent(pesanVertikal)}`
+                  : `https://wa.me/?text=${encodeURIComponent(pesanVertikal)}`;
+                const preId = `teksWA_${idx}`;
+
+                return `
+                  <div class="rounded-2xl border border-[#e6decb] bg-[#fcfaf5] p-4 text-left">
+                    <div class="mb-2.5 flex flex-wrap items-center justify-between gap-2 border-b border-[#ece3d1] pb-2">
+                      <div>
+                        <p class="text-sm font-extrabold text-stone-900">${info.nama}</p>
+                        <p class="text-xs text-stone-500">${info.jabatan}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onclick="salinTeksWA('${preId}', this)"
+                        class="rounded-xl border border-[#e6decb] bg-white px-3 py-1.5 text-xs font-bold text-stone-700 transition hover:bg-[#efe9dc]"
+                      >
+                        📋 Salin Teks
+                      </button>
+                    </div>
+
+                    <pre id="${preId}" class="mb-3 max-h-72 overflow-y-auto whitespace-pre-wrap rounded-xl border border-[#e6decb] bg-white p-3 font-sans text-xs leading-relaxed text-stone-800">${pesanVertikal}</pre>
+
+                    <a
+                      href="${urlWA}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#2f5d50] px-4 py-3 text-xs font-extrabold text-white shadow-sm transition hover:bg-[#24493e] sm:text-sm"
+                    >
+                      <span>📲</span>
+                      <span>Kirim WA ke ${info.nama}</span>
+                    </a>
+                  </div>
+                `;
+              })
+              .join("");
+
+            document.getElementById("wadahFormDisposisi").innerHTML = `
+              <div class="space-y-4 text-center">
+                <div class="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4">
+                  <div class="text-3xl">✅</div>
+                  <h3 class="mt-1 text-lg font-extrabold text-emerald-900">
+                    Disposisi Berhasil Tersimpan!
+                  </h3>
+                  <p class="mt-0.5 text-xs text-emerald-800">
+                    Format disposisi vertikal telah disusun rapi untuk dikirimkan melalui WhatsApp.
+                  </p>
+                </div>
+
+                <div class="space-y-4">
+                  ${kartuPesanHTML}
+                </div>
+
+                <div class="pt-2">
+                  <button
+                    type="button"
+                    onclick="location.href='daftar-surat.html'"
+                    class="rounded-2xl border border-[#e6decb] bg-[#faf6ef] px-4 py-2.5 text-xs font-bold text-stone-700 transition hover:bg-[#efe9dc]"
+                  >
+                    ← Kembali ke Daftar Surat
+                  </button>
+                </div>
+              </div>
+            `;
+          } catch (err) {
+            console.error("Gagal menyimpan disposisi:", err);
+            alert("Gagal menyimpan disposisi.");
+            btnSubmit.innerHTML = teksTombolAwal;
+            btnSubmit.disabled = false;
+          }
+        });
+
+      function keluarSistem() {
+        localStorage.removeItem("hakAksesKelurahan");
+        localStorage.removeItem("pegawaiAktifKelurahan");
+        window.location.href = "login.html";
+      }
+
+      window.onload = loadDetailSurat;
+    </script>
+  </body>
+</html>
