@@ -444,7 +444,18 @@
         document.getElementById("badgeCountSudah").textContent =
           `${nSudah} Surat`;
       }
+ const badgePengguna = document.getElementById("badgePenggunaAktif");
+      if (badgePengguna) {
+        badgePengguna.textContent = sesiAktif?.nama
+          ? `${sesiAktif.nama} · ${sesiAktif.jabatan || peranAktif}`
+          : `Peran: ${peranAktif}`;
+      }
 
+      let semuaTopik = [];
+      let topikAktifId = null;
+      let pesanTopikAktif = [];
+      let petaPegawai = {};
+      
       function keluarSistem() {
         localStorage.removeItem("hakAksesKelurahan");
         location.href = "login.html";
