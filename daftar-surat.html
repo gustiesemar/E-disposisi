@@ -349,8 +349,8 @@
       const badgePengguna = document.getElementById("badgePenggunaAktif");
       if (badgePengguna) {
         badgePengguna.textContent = sesiAktif?.nama
-          ? `👑 ${sesiAktif.nama} · Role: ${teksRole}`
-          //: `👑 Role: ${teksRole}`//;
+         // ? `👑 ${sesiAktif.nama} · Role: ${teksRole}`
+          : `👑 Role: ${teksRole}`//;
       }
 
       const tglIndo = (d) =>
