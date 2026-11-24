@@ -339,8 +339,8 @@
       const badgePengguna = document.getElementById("badgePenggunaAktif");
       if (badgePengguna) {
         badgePengguna.textContent = sesiAktif?.nama
-          ? `👑 ${sesiAktif.nama} · Role: ${teksRole}`
-          : `👑 Role: ${teksRole}`;
+          ? `${sesiAktif.nama} · ${sesiAktif.jabatan || peranAktif}`
+          : `Peran: ${peranAktif}`;
       }
 
       // --- Keamanan Menu Sidebar berdasarkan Role ---
