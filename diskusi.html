@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://gfxqowoohdccbwfubbwn.supabase.co" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -505,6 +506,9 @@
         supabaseKey,
       );
 
+      const CACHE_TOPIK_KEY = "edison_cache_topik_v1";
+      const CACHE_PEGAWAI_KEY = "edison_cache_pegawai_v1";
+
       const sesiAktif = JSON.parse(
         localStorage.getItem("pegawaiAktifKelurahan") || "null",
       );
@@ -548,6 +552,21 @@
         return div.innerHTML;
       }
 
+      function simpanCache(key, payload) {
+        try {
+          sessionStorage.setItem(key, JSON.stringify(payload));
+        } catch (_) {}
+      }
+
+      function bacaCache(key) {
+        try {
+          const raw = sessionStorage.getItem(key);
+          return raw ? JSON.parse(raw) : null;
+        } catch (_) {
+          return null;
+        }
+      }
+
       function tampilkanModeDaftarSaja() {
         topikAktifId = null;
         pesanTopikAktif = [];
@@ -576,22 +595,76 @@
         kolomDetail.classList.add("flex");
       }
 
-      async function muatPegawai() {
-        const { data } = await supabaseClient
-          .from("users")
-          .select("id, nama, jabatan");
-        petaPegawai = {};
-        (data || []).forEach((u) => {
-          petaPegawai[Number(u.id)] = u.jabatan
+      function bangunPetaPegawai(rows) {
+        const map = {};
+        (rows || []).forEach((u) => {
+          map[Number(u.id)] = u.jabatan
             ? `${u.nama} (${u.jabatan})`
             : u.nama;
         });
+        return map;
+      }
+
+      async function muatSemuaDataAwal() {
+        // Tampilkan cache instan jika tersedia agar tidak menunggu loading awal
+        const cachedPegawai = bacaCache(CACHE_PEGAWAI_KEY);
+        const cachedTopik = bacaCache(CACHE_TOPIK_KEY);
+
+        if (cachedPegawai) {
+          petaPegawai = bangunPetaPegawai(cachedPegawai);
+        }
+        if (Array.isArray(cachedTopik) && cachedTopik.length) {
+          semuaTopik = cachedTopik;
+          renderDaftarTopik();
+        }
+
+        // Ambil data pegawai dan topik secara paralel
+        const [resPegawai, resTopik] = await Promise.all([
+          supabaseClient.from("users").select("id, nama, jabatan"),
+          supabaseClient
+            .from("topik_diskusi")
+            .select(
+              "id, judul, kategori, status, ringkasan, kesimpulan, dibuat_oleh, created_at",
+            )
+            .order("created_at", { ascending: false }),
+        ]);
+
+        if (resPegawai.data) {
+          petaPegawai = bangunPetaPegawai(resPegawai.data);
+          simpanCache(CACHE_PEGAWAI_KEY, resPegawai.data);
+        }
+
+        if (resTopik.error) {
+          console.error("Gagal memuat topik:", resTopik.error);
+          if (!semuaTopik.length) {
+            document.getElementById("daftarTopik").innerHTML =
+              `<p class="py-6 text-center text-sm font-semibold text-red-600">Gagal memuat topik diskusi.</p>`;
+          }
+          return;
+        }
+
+        semuaTopik = resTopik.data || [];
+        simpanCache(CACHE_TOPIK_KEY, semuaTopik);
+        renderDaftarTopik();
+
+        if (topikAktifId) {
+          const masihAda = semuaTopik.some(
+            (t) => Number(t.id) === Number(topikAktifId),
+          );
+          if (masihAda) {
+            await pilihTopik(topikAktifId);
+          } else {
+            tampilkanModeDaftarSaja();
+          }
+        }
       }
 
       async function muatTopik() {
         const { data, error } = await supabaseClient
           .from("topik_diskusi")
-          .select("*")
+          .select(
+            "id, judul, kategori, status, ringkasan, kesimpulan, dibuat_oleh, created_at",
+          )
           .order("created_at", { ascending: false });
 
         if (error) {
@@ -602,6 +675,7 @@
         }
 
         semuaTopik = data || [];
+        simpanCache(CACHE_TOPIK_KEY, semuaTopik);
         renderDaftarTopik();
 
         if (topikAktifId) {
@@ -689,34 +763,7 @@
           .join("");
       }
 
-      async function pilihTopik(id) {
-        const targetId = Number(id);
-        topikAktifId = targetId;
-        tampilkanModeDenganDetail();
-        renderDaftarTopik();
-
-        const topik = semuaTopik.find((t) => Number(t.id) === targetId);
-        if (!topik) {
-          tampilkanModeDaftarSaja();
-          return;
-        }
-
-        // Langsung tampilkan status transisi agar pergantian topik terasa responsif
-        document.getElementById("panelDetailTopik").innerHTML = `
-          <div class="py-16 text-center text-sm text-stone-500">
-            ⏳ Memuat detail topik "${escapeHtml(topik.judul)}"...
-          </div>
-        `;
-
-        const { data: pesanList } = await supabaseClient
-          .from("pesan_diskusi")
-          .select("*")
-          .eq("topik_id", targetId)
-          .order("created_at", { ascending: true });
-
-        // Pastikan user tidak mengklik topik lain saat request masih berjalan
-        if (Number(topikAktifId) !== targetId) return;
-
+      function renderDetailTopik(topik, pesanList) {
         pesanTopikAktif = pesanList || [];
         const pembuat = petaPegawai[Number(topik.dibuat_oleh)] || "Pegawai";
         const isSelesai =
@@ -862,6 +909,41 @@
       `;
       }
 
+      async function pilihTopik(id) {
+        const targetId = Number(id);
+        topikAktifId = targetId;
+        tampilkanModeDenganDetail();
+        renderDaftarTopik();
+
+        const topik = semuaTopik.find((t) => Number(t.id) === targetId);
+        if (!topik) {
+          tampilkanModeDaftarSaja();
+          return;
+        }
+
+        // Render detail topik langsung tanpa menunggu pesan agar transisi instan
+        renderDetailTopik(topik, []);
+        document.getElementById("wadahPesan").innerHTML = `
+          <p class="py-4 text-center text-xs text-stone-400">⏳ Memuat riwayat obrolan...</p>
+        `;
+
+        const { data: pesanList, error } = await supabaseClient
+          .from("pesan_diskusi")
+          .select("id, topik_id, pengirim_id, isi_pesan, created_at")
+          .eq("topik_id", targetId)
+          .order("created_at", { ascending: true });
+
+        if (Number(topikAktifId) !== targetId) return;
+
+        if (error) {
+          document.getElementById("wadahPesan").innerHTML =
+            `<p class="py-4 text-center text-xs font-semibold text-red-600">Gagal memuat pesan.</p>`;
+          return;
+        }
+
+        renderDetailTopik(topik, pesanList || []);
+      }
+
       async function unduhLaporanPDF(id) {
         const topik = semuaTopik.find((t) => Number(t.id) === Number(id));
         if (!topik) return;
@@ -875,7 +957,7 @@
         if (Number(topikAktifId) !== Number(id)) {
           const { data } = await supabaseClient
             .from("pesan_diskusi")
-            .select("*")
+            .select("id, topik_id, pengirim_id, isi_pesan, created_at")
             .eq("topik_id", Number(id))
             .order("created_at", { ascending: true });
           daftarPesan = data || [];
@@ -899,7 +981,6 @@
           }
         };
 
-        // Kop Laporan Resmi
         doc.setFont("helvetica", "bold");
         doc.setFontSize(13);
         doc.text("PEMERINTAH KELURAHAN SONDAKAN", 105, y, { align: "center" });
@@ -1190,11 +1271,15 @@
         const isi = input.value.trim();
         if (!isi) return;
 
-        const { error } = await supabaseClient.from("pesan_diskusi").insert({
-          topik_id: topikAktifId,
-          pengirim_id: sesiAktif?.id ? Number(sesiAktif.id) : null,
-          isi_pesan: isi,
-        });
+        const { data, error } = await supabaseClient
+          .from("pesan_diskusi")
+          .insert({
+            topik_id: topikAktifId,
+            pengirim_id: sesiAktif?.id ? Number(sesiAktif.id) : null,
+            isi_pesan: isi,
+          })
+          .select("id, topik_id, pengirim_id, isi_pesan, created_at")
+          .single();
 
         if (error) {
           alert("Gagal mengirim pesan: " + error.message);
@@ -1202,18 +1287,27 @@
         }
 
         input.value = "";
-        await pilihTopik(topikAktifId);
+        pesanTopikAktif.push(
+          data || {
+            topik_id: topikAktifId,
+            pengirim_id: sesiAktif?.id ? Number(sesiAktif.id) : null,
+            isi_pesan: isi,
+            created_at: new Date().toISOString(),
+          },
+        );
+        renderDetailTopik(topik, pesanTopikAktif);
       }
 
       function keluarSistem() {
         localStorage.removeItem("hakAksesKelurahan");
         localStorage.removeItem("pegawaiAktifKelurahan");
+        sessionStorage.removeItem(CACHE_TOPIK_KEY);
+        sessionStorage.removeItem(CACHE_PEGAWAI_KEY);
         window.location.href = "login.html";
       }
 
-      window.addEventListener("load", async () => {
-        await muatPegawai();
-        await muatTopik();
+      document.addEventListener("DOMContentLoaded", () => {
+        muatSemuaDataAwal();
       });
     </script>
   </body>
