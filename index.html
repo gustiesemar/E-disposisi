@@ -14,199 +14,345 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-DISON</title>
+    <title>Input Surat Masuk - E-DISON Kelurahan Sondakan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <style>
+      :root {
+        --bg-canvas: #f6f2ea;
+        --bg-surface: #fffdf9;
+        --border-soft: #e6decb;
+        --accent-sage: #2f5d50;
+      }
       body {
-        font-family: "Inter", sans-serif;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background: var(--bg-canvas);
+        color: #1f2421;
+      }
+      .tactile-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-soft);
+        box-shadow: 0 10px 25px -15px rgba(31, 36, 33, 0.12);
+      }
+      .tactile-input {
+        background: #fcfaf5;
+        border: 1px solid var(--border-soft);
+      }
+      .tactile-input:focus {
+        outline: none;
+        border-color: var(--accent-sage);
+        box-shadow: 0 0 0 3px rgba(47, 93, 80, 0.14);
+        background: #fff;
+      }
+      .tactile-pill {
+        background: #faf6ef;
+        border: 1px solid #e6decb;
       }
     </style>
   </head>
-  <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
-   <nav class="bg-blue-700 text-white p-4 shadow-md flex justify-between items-center sticky top-0 z-10">
+  <body class="flex min-h-screen flex-col">
+    <!-- Navbar Soft Tactile (selaras dengan daftar-surat.html) -->
+    <nav
+      class="sticky top-0 z-20 border-b border-[#e6decb] bg-[#fffdf9]/95 px-4 py-3 backdrop-blur sm:px-6"
+    >
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-3">
         <div class="flex items-center gap-3">
-            <img src="logo_kelurahan.png" alt="Logo Kelurahan Sondakan" class="h-10 w-10 rounded-full border border-white/50 object-cover shadow-inner">
-            <div class="text-lg md:text-xl font-bold text-white">
-                E-DISON
+          <img
+            src="logo_kelurahan.png"
+            alt="Logo Kelurahan Sondakan"
+            class="h-10 w-10 rounded-2xl border border-[#e6decb] object-cover"
+          />
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-base font-extrabold text-stone-900 sm:text-lg"
+                >E-DISON</span
+              >
+              <span
+                class="hidden rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 sm:inline-block"
+                >Kelurahan Sondakan</span
+              >
             </div>
+            <p class="text-[11px] text-stone-500">
+              Sistem Administrasi & Disposisi Surat Masuk
+            </p>
+          </div>
         </div>
-        
-        <div class="flex items-center gap-3">
-            <div class="text-xs md:text-sm bg-indigo-500 text-white font-bold px-3 py-1.5 rounded-full border border-indigo-400 hidden md:block">
-                👁️ Mode: Viewer / Monitoring
-            </div>
-            <button onclick="keluarSistem()" class="text-xs md:text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-full font-bold shadow-md transition">
-                Keluar 🚪
-            </button>
+
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <span
+            id="badgePenggunaAktif"
+            class="tactile-pill hidden rounded-full px-3.5 py-1.5 text-xs font-bold text-stone-700 sm:inline-flex items-center gap-1.5"
+          >
+            Memuat akun...
+          </span>
+          <button
+            type="button"
+            onclick="keluarSistem()"
+            class="rounded-2xl bg-red-500 hover:bg-red-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition"
+          >
+            Keluar 🚪
+          </button>
         </div>
+      </div>
     </nav>
 
-    <div class="flex flex-1 flex-col md:flex-row">
-      <aside class="w-full md:w-64 bg-white shadow-sm border-r border-slate-200 p-4 flex flex-row md:flex-col gap-2 overflow-x-auto">
-    <a href="index.html" class="bg-blue-50 text-blue-700 font-semibold p-3 rounded-lg block whitespace-nowrap border border-blue-100 transition">
-        📥 Input Surat Masuk
-    </a>
-    
-    <a href="daftar-surat.html" id="menuDaftar" class="text-slate-600 hover:bg-slate-50 hover:text-blue-600 p-3 rounded-lg block whitespace-nowrap transition">
-        📂 Daftar Surat
-    </a>
-    
-    <a href="monitoring.html" class="text-slate-600 hover:bg-slate-50 hover:text-blue-600 p-3 rounded-lg block whitespace-nowrap transition">
-        📊 Monitoring Arsip
-    </a>
-    
-    <a href="pengaturan.html" id="menuPengaturan" class="text-slate-600 hover:bg-slate-50 hover:text-blue-600 p-3 rounded-lg block whitespace-nowrap transition mt-4 border-t border-slate-200 pt-4">
-        ⚙️ Pengaturan Pejabat
-    </a>
-</aside>
-
-      <main class="flex-1 p-4 md:p-8">
-        <div
-          class="max-w-3xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-sm border border-slate-200"
+    <div class="mx-auto flex w-full max-w-7xl flex-1 flex-col md:flex-row">
+      <!-- Sidebar Soft Tactile -->
+      <aside
+        class="flex w-full shrink-0 gap-2 overflow-x-auto border-b border-[#e6decb] bg-[#faf6ef] p-3 md:w-64 md:flex-col md:border-b-0 md:border-r md:p-5"
+      >
+        <a
+          href="index.html"
+          id="menuInput"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl border border-[#d8ccb5] bg-[#fffdf9] px-3.5 py-2.5 text-sm font-bold text-[#2f5d50]"
+          >📥 Input Surat Masuk</a
         >
-          <h2 class="text-2xl font-bold text-slate-800 mb-1">
-            Form Surat Masuk
-          </h2>
-          <p class="text-slate-500 mb-6 pb-4 border-b text-sm md:text-base">
-            Silakan catat detail surat yang diterima oleh Kelurahan hari ini.
-          </p>
+        <a
+          href="daftar-surat.html"
+          id="menuDaftar"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 hover:bg-[#efe9dc] hover:text-stone-900"
+          >📂 Daftar Surat</a
+        >
+        <a
+          href="monitoring.html"
+          id="menuMonitoring"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 hover:bg-[#efe9dc] hover:text-stone-900"
+          >📊 Monitoring Arsip</a
+        >
+        <a
+          href="diskusi.html"
+          id="menuDiskusi"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 hover:bg-[#efe9dc] hover:text-stone-900"
+          >💬 Ruang Diskusi</a
+        >
+        <a
+          href="pengaturan.html"
+          id="menuPengaturan"
+          class="flex items-center gap-2.5 whitespace-nowrap rounded-2xl px-3.5 py-2.5 text-sm font-semibold text-stone-600 hover:bg-[#efe9dc] hover:text-stone-900 md:mt-3 md:border-t md:border-[#e6decb] md:pt-4"
+          >⚙️ Pengaturan Pejabat</a
+        >
+      </aside>
 
-          <form id="formSurat" class="space-y-5">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-1"
-                  >Jenis Surat</label
-                >
-                <select
-                  id="jenisSurat"
-                  class="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 bg-slate-50"
-                  onchange="toggleUndanganFields()"
-                >
-                  <option value="biasa">Surat Biasa</option>
-                  <option value="undangan">Surat Undangan</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-1"
-                  >Tanggal Surat Masuk</label
-                >
-                <input
-                  type="date"
-                  id="tglMasuk"
-                  class="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 bg-slate-50"
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-1"
-                >Asal Surat</label
+      <!-- Konten Utama -->
+      <main class="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="mx-auto max-w-4xl space-y-6">
+          <section class="tactile-card rounded-3xl p-6 sm:p-8">
+            <div class="border-b border-[#ece3d1] pb-5">
+              <span
+                class="inline-block rounded-full border border-amber-200 bg-amber-100/80 px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-amber-900"
+                >Persuratan & Registrasi</span
               >
-              <input
-                type="text"
-                id="asalSurat"
-                class="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 bg-slate-50"
-                required
-              />
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-1"
-                >Perihal Surat</label
+              <h1
+                class="mt-2 text-2xl font-extrabold text-stone-900 sm:text-3xl"
               >
-              <textarea
-                id="perihal"
-                class="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 bg-slate-50"
-                rows="3"
-                required
-              ></textarea>
+                Form Surat Masuk
+              </h1>
+              <p class="mt-1 text-sm text-stone-500">
+                Silakan catat detail surat yang diterima oleh Kelurahan hari ini.
+              </p>
             </div>
 
-            <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-1"
-                >Link Google Drive (File PDF) -
-                <span class="text-slate-400 font-normal">Opsional</span></label
-              >
-              <input
-                type="url"
-                id="linkGdrive"
-                placeholder="Contoh: https://drive.google.com/file/d/..."
-                class="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 bg-slate-50"
-              />
-            </div>
-
-            <div
-              id="fieldUndangan"
-              class="hidden bg-blue-50 p-5 rounded-lg border border-blue-200 mt-6 transition-all"
-            >
-              <h3 class="font-bold text-blue-800 mb-4 flex items-center gap-2">
-                <span>📅</span> Detail Jadwal Undangan
-              </h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form id="formSurat" class="mt-6 space-y-5">
+              <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
-                  <label class="block text-sm font-semibold text-blue-900 mb-1"
-                    >Tanggal Rapat</label
+                  <label
+                    for="jenisSurat"
+                    class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-stone-600"
+                    >Jenis Surat</label
+                  >
+                  <select
+                    id="jenisSurat"
+                    class="tactile-input w-full rounded-2xl px-4 py-2.5 text-sm font-medium text-stone-800"
+                    onchange="toggleUndanganFields()"
+                  >
+                    <option value="biasa">Surat Biasa</option>
+                    <option value="undangan">Surat Undangan</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    for="tglMasuk"
+                    class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-stone-600"
+                    >Tanggal Surat Masuk</label
                   >
                   <input
                     type="date"
-                    id="tglRapat"
-                    class="w-full border border-blue-300 p-2.5 rounded-lg"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-semibold text-blue-900 mb-1"
-                    >Jam Rapat</label
-                  >
-                  <input
-                    type="time"
-                    id="jamRapat"
-                    class="w-full border border-blue-300 p-2.5 rounded-lg"
-                  />
-                </div>
-                <div class="md:col-span-2">
-                  <label class="block text-sm font-semibold text-blue-900 mb-1"
-                    >Tempat Rapat</label
-                  >
-                  <input
-                    type="text"
-                    id="tempatRapat"
-                    class="w-full border border-blue-300 p-2.5 rounded-lg"
+                    id="tglMasuk"
+                    class="tactile-input w-full rounded-2xl px-4 py-2.5 text-sm font-medium text-stone-800"
+                    required
                   />
                 </div>
               </div>
-            </div>
 
-            <div class="pt-4">
-              <button
-                type="submit"
-                id="btnSubmit"
-                class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-all shadow-md"
+              <div>
+                <label
+                  for="asalSurat"
+                  class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-stone-600"
+                  >Asal Surat</label
+                >
+                <input
+                  type="text"
+                  id="asalSurat"
+                  placeholder="Contoh: Kecamatan Laweyan / Setda Kota Surakarta"
+                  class="tactile-input w-full rounded-2xl px-4 py-2.5 text-sm text-stone-800"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  for="perihal"
+                  class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-stone-600"
+                  >Perihal Surat</label
+                >
+                <textarea
+                  id="perihal"
+                  placeholder="Tuliskan inti atau perihal surat..."
+                  class="tactile-input w-full rounded-2xl px-4 py-2.5 text-sm text-stone-800"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+
+              <div>
+                <label
+                  for="linkGdrive"
+                  class="mb-1.5 block text-xs font-bold uppercase tracking-wider text-stone-600"
+                  >Link Google Drive (File PDF)
+                  <span class="font-normal normal-case text-stone-400"
+                    >- Opsional</span
+                  ></label
+                >
+                <input
+                  type="url"
+                  id="linkGdrive"
+                  placeholder="Contoh: https://drive.google.com/file/d/..."
+                  class="tactile-input w-full rounded-2xl px-4 py-2.5 text-sm text-stone-800"
+                />
+              </div>
+
+              <div
+                id="fieldUndangan"
+                class="mt-6 hidden rounded-2xl border border-amber-200 bg-amber-50/70 p-5 transition-all"
               >
-                Simpan Data Surat
-              </button>
-            </div>
-          </form>
+                <h3
+                  class="mb-4 flex items-center gap-2 text-sm font-extrabold text-amber-900"
+                >
+                  <span>📅</span> Detail Jadwal Undangan
+                </h3>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div>
+                    <label
+                      for="tglRapat"
+                      class="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-900"
+                      >Tanggal Rapat</label
+                    >
+                    <input
+                      type="date"
+                      id="tglRapat"
+                      class="tactile-input w-full rounded-2xl px-4 py-2.5 text-sm text-stone-800"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="jamRapat"
+                      class="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-900"
+                      >Jam Rapat</label
+                    >
+                    <input
+                      type="time"
+                      id="jamRapat"
+                      class="tactile-input w-full rounded-2xl px-4 py-2.5 text-sm text-stone-800"
+                    />
+                  </div>
+                  <div class="md:col-span-2">
+                    <label
+                      for="tempatRapat"
+                      class="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-900"
+                      >Tempat Rapat</label
+                    >
+                    <input
+                      type="text"
+                      id="tempatRapat"
+                      placeholder="Contoh: Aula Kecamatan Laweyan"
+                      class="tactile-input w-full rounded-2xl px-4 py-2.5 text-sm text-stone-800"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-3">
+                <button
+                  type="submit"
+                  id="btnSubmit"
+                  class="w-full rounded-2xl bg-[#2f5d50] px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#24493e]"
+                >
+                  💾 Simpan Data Surat
+                </button>
+              </div>
+            </form>
+          </section>
         </div>
       </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      // 1. URL dan API Key (Sudah benar!)
       const supabaseUrl = "https://gfxqowoohdccbwfubbwn.supabase.co";
       const supabaseKey =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmeHFvd29vaGRjY2J3ZnViYnduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MDc2OTgsImV4cCI6MjA4OTk4MzY5OH0.kkVVDqkSVr6mhoz5oIhObFpbsGILtfwL2Jkv0pcW1ow";
 
-      // 2. Inisialisasi Supabase (KITA GANTI NAMANYA JADI supabaseClient AGAR TIDAK BENTROK)
       const supabaseClient = window.supabase.createClient(
         supabaseUrl,
         supabaseKey,
       );
+
+      // --- Tampilkan Role & Identitas Login di sebelah tombol Keluar ---
+      let sesiAktif = null;
+      try {
+        sesiAktif = JSON.parse(
+          localStorage.getItem("pegawaiAktifKelurahan") || "null",
+        );
+      } catch (_) {
+        sesiAktif = null;
+      }
+
+      const peranAktif = (
+        sesiAktif?.role ||
+        localStorage.getItem("hakAksesKelurahan") ||
+        ""
+      )
+        .trim()
+        .toLowerCase();
+
+      const labelRole = {
+        superadmin: "Super Admin",
+        super_admin: "Super Admin",
+        admin: "Admin / Pejabat",
+        viewer: "Viewer",
+      };
+
+      const teksRole = labelRole[peranAktif] || peranAktif || "Pengguna";
+      const badgePengguna = document.getElementById("badgePenggunaAktif");
+      if (badgePengguna) {
+        badgePengguna.textContent = sesiAktif?.nama
+          ? `👑 ${sesiAktif.nama} · Role: ${teksRole}`
+          : `👑 Role: ${teksRole}`;
+      }
+
+      // --- Keamanan Menu Sidebar berdasarkan Role ---
+      const isSuperAdmin =
+        peranAktif === "superadmin" || peranAktif === "super_admin";
+
+      if (!isSuperAdmin) {
+        const mDaftar = document.getElementById("menuDaftar");
+        const mPengaturan = document.getElementById("menuPengaturan");
+        if (mDaftar) mDaftar.classList.add("hidden");
+        if (mPengaturan) mPengaturan.classList.add("hidden");
+      }
 
       function toggleUndanganFields() {
         const jenis = document.getElementById("jenisSurat").value;
@@ -235,8 +381,6 @@
           const tglMasuk = document.getElementById("tglMasuk").value;
           const asal = document.getElementById("asalSurat").value;
           const perihal = document.getElementById("perihal").value;
-
-          // Mengambil nilai link gdrive
           const linkGdrive =
             document.getElementById("linkGdrive").value || null;
 
@@ -251,14 +395,13 @@
           }
 
           try {
-            // Mengirim ke tabel 'surat' termasuk link_gdrive
-            const { data, error } = await supabaseClient.from("surat").insert([
+            const { error } = await supabaseClient.from("surat").insert([
               {
                 jenis_surat: jenis,
                 tgl_masuk: tglMasuk,
                 asal_surat: asal,
                 perihal: perihal,
-                link_gdrive: linkGdrive, // <--- Data baru dikirim
+                link_gdrive: linkGdrive,
                 tgl_rapat: tglRapat,
                 jam_rapat: jamRapat,
                 tempat_rapat: tempatRapat,
@@ -281,28 +424,12 @@
           btnSubmit.innerHTML = teksAsli;
           btnSubmit.disabled = false;
         });
-    </script>
-    <script>
-      // Fungsi untuk Logout
-      function keluarSistem() {
-        // 1. Buang "Kartu Tanda Pengenal" dari sistem
-        localStorage.removeItem("hakAksesKelurahan");
 
-        // 2. Lemparkan pengguna kembali ke halaman Login
+      function keluarSistem() {
+        localStorage.removeItem("hakAksesKelurahan");
+        localStorage.removeItem("pegawaiAktifKelurahan");
         window.location.href = "login.html";
       }
-   
-    // --- FITUR KEAMANAN MENU INDEX ---
-    const peran = localStorage.getItem('hakAksesKelurahan');
-
-    if (peran === 'admin') {
-        // Sembunyikan menu yang tidak boleh diakses admin
-        const mDaftar = document.getElementById('menuDaftar');
-        const mPengaturan = document.getElementById('menuPengaturan');
-        
-        if (mDaftar) mDaftar.style.display = 'none';
-        if (mPengaturan) mPengaturan.style.display = 'none';
-    }
-</script>
+    </script>
   </body>
 </html>
