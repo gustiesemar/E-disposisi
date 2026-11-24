@@ -44,6 +44,10 @@
         box-shadow: 0 0 0 3px rgba(47, 93, 80, 0.14);
         background: #fff;
       }
+      .tactile-pill {
+        background: #faf6ef;
+        border: 1px solid #e6decb;
+      }
     </style>
   </head>
   <body class="flex min-h-screen flex-col">
@@ -72,7 +76,7 @@
             </p>
           </div>
         </div>
-       <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="flex items-center gap-2.5 sm:gap-3">
           <span
             id="badgePenggunaAktif"
             class="tactile-pill hidden rounded-full px-3.5 py-1.5 text-xs font-bold text-stone-700 sm:inline-flex items-center gap-1.5"
@@ -317,6 +321,38 @@
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmeHFvd29vaGRjY2J3ZnViYnduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MDc2OTgsImV4cCI6MjA4OTk4MzY5OH0.kkVVDqkSVr6mhoz5oIhObFpbsGILtfwL2Jkv0pcW1ow",
       );
 
+      let sesiAktif = null;
+      try {
+        sesiAktif = JSON.parse(
+          localStorage.getItem("pegawaiAktifKelurahan") || "null",
+        );
+      } catch (_) {
+        sesiAktif = null;
+      }
+
+      const peranAktif = (
+        sesiAktif?.role ||
+        localStorage.getItem("hakAksesKelurahan") ||
+        ""
+      )
+        .trim()
+        .toLowerCase();
+
+      const labelRole = {
+        superadmin: "Super Admin",
+        super_admin: "Super Admin",
+        admin: "Admin / Pejabat",
+        viewer: "Viewer",
+      };
+
+      const teksRole = labelRole[peranAktif] || peranAktif || "Pengguna";
+      const badgePengguna = document.getElementById("badgePenggunaAktif");
+      if (badgePengguna) {
+        badgePengguna.textContent = sesiAktif?.nama
+          ? `👑 ${sesiAktif.nama} · Role: ${teksRole}`
+          : `👑 Role: ${teksRole}`;
+      }
+
       const tglIndo = (d) =>
         d
           ? new Date(d).toLocaleDateString("id-ID", {
@@ -444,20 +480,10 @@
         document.getElementById("badgeCountSudah").textContent =
           `${nSudah} Surat`;
       }
- const badgePengguna = document.getElementById("badgePenggunaAktif");
-      if (badgePengguna) {
-        badgePengguna.textContent = sesiAktif?.nama
-          ? `${sesiAktif.nama} · ${sesiAktif.jabatan || peranAktif}`
-          : `Peran: ${peranAktif}`;
-      }
 
-      let semuaTopik = [];
-      let topikAktifId = null;
-      let pesanTopikAktif = [];
-      let petaPegawai = {};
-      
       function keluarSistem() {
         localStorage.removeItem("hakAksesKelurahan");
+        localStorage.removeItem("pegawaiAktifKelurahan");
         location.href = "login.html";
       }
 
