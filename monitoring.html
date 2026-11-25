@@ -608,46 +608,48 @@
         window.location.href = "login.html";
       }
 
-      function terapkanHakAksesDanIdentitas() {
-        const menuDaftar = document.getElementById("menuDaftar");
-        const menuInput = document.getElementById("menuInput");
-        const menuPengaturan = document.getElementById("menuPengaturan");
-        const badgePengguna = document.getElementById("badgePenggunaAktif");
+     function terapkanHakAksesDanIdentitas() {
+  const menuDaftar = document.getElementById("menuDaftar");
+  const menuInput = document.getElementById("menuInput");
+  const menuPengaturan = document.getElementById("menuPengaturan");
+  const badgePengguna = document.getElementById("badgePenggunaAktif");
 
-        // Menu Daftar Surat hanya tampil pada mode Super Admin
-        if (menuDaftar) {
-          menuDaftar.classList.toggle("hidden", !isSuperAdmin);
-        }
+  const roleAktif = String(
+    (pegawaiAktif && pegawaiAktif.role) || peranPengguna || "viewer",
+  )
+    .trim()
+    .toLowerCase();
 
-        if (!isSuperAdmin) {
-         // if (menuInput) menuInput.classList.add("hidden");//
-          if (menuPengaturan) menuPengaturan.classList.add("hidden");
-        }
-        if (!isadmin) {
-          if (menuInput) menuInput.classList.add("hidden");
-          if (menuPengaturan) menuPengaturan.classList.add("hidden");
-        }
+  const isAdmin = roleAktif === "admin";
 
-        // Tampilkan nama pejabat yang mengakses pada badge header
-       const namaPejabatAktif =
-          (pegawaiAktif && (pegawaiAktif.nama || pegawaiAktif.jabatan)) ||
-          (isSuperAdmin
-            ? "Bapak Lurah"
-            : peranPengguna === "admin"
-              ? "Pejabat Kelurahan"
-              : "Pejabat");
+  // Menu Daftar Surat hanya tampil pada mode Super Admin
+  if (menuDaftar) {
+    menuDaftar.classList.toggle("hidden", !isSuperAdmin);
+  }
 
-       const jabatanPejabatAktif =
-          pegawaiAktif && pegawaiAktif.jabatan
-           ? ` · ${pegawaiAktif.jabatan}`
-          : "";
+  if (!isSuperAdmin && !isAdmin) {
+    if (menuInput) menuInput.classList.add("hidden");
+    if (menuPengaturan) menuPengaturan.classList.add("hidden");
+  }
 
-       if (badgePenggunaAktif) {
-        badgePenggunaaAktif.textContent = ` ${namaPejabatAktif}${jabatanPejabatAktif}`;
-      }
-      }
+  // Tampilkan nama pejabat, jabatan, serta role aktif pada badge header
+  const namaPejabatAktif =
+    (pegawaiAktif && (pegawaiAktif.nama || pegawaiAktif.jabatan)) ||
+    (isSuperAdmin
+      ? "Bapak Lurah"
+      : isAdmin
+        ? "Admin Kelurahan"
+        : "Pejabat");
 
-       terapkanHakAksesDanIdentitas();
+  const jabatanPejabatAktif =
+    pegawaiAktif && pegawaiAktif.jabatan ? ` · ${pegawaiAktif.jabatan}` : "";
+
+  if (badgePengguna) {
+    badgePengguna.textContent = `👤 ${namaPejabatAktif}${jabatanPejabatAktif} · Role: ${roleAktif}`;
+  }
+}
+
+       //terapkanHakAksesDanIdentitas();
  
         
       function keluarSistem() {
