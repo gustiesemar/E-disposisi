@@ -629,26 +629,59 @@
         }
 
         // Tampilkan nama pejabat yang mengakses pada badge header
-        const namaPejabatAktif =
-          (pegawaiAktif && (pegawaiAktif.nama || pegawaiAktif.jabatan)) ||
-          (isSuperAdmin
-            ? "Bapak Lurah"
-            : peranPengguna === "admin"
-              ? "Pejabat Kelurahan"
-              : "Pejabat");
+      // <!--const namaPejabatAktif =
+        //  (pegawaiAktif && (pegawaiAktif.nama || pegawaiAktif.jabatan)) ||
+          //(isSuperAdmin
+            //? "Bapak Lurah"
+            //: peranPengguna === "admin"
+             // ? "Pejabat Kelurahan"
+              //: "Pejabat");
 
-        const jabatanPejabatAktif =
-          pegawaiAktif && pegawaiAktif.jabatan
-            ? ` · ${pegawaiAktif.jabatan}`
-            : "";
+      // const jabatanPejabatAktif =
+        //  pegawaiAktif && pegawaiAktif.jabatan
+       //     ? ` · ${pegawaiAktif.jabatan}`
+      //      : "";
 
-        if (badgePengguna) {
-          badgePengguna.textContent = `👤 ${namaPejabatAktif}${jabatanPejabatAktif}`;
-        }
+   //     if (badgePengguna) {
+        //  badgePengguna.textContent = `👤 ${namaPejabatAktif}${jabatanPejabatAktif}`;
+     //   }
+  //    }
+
+      // terapkanHakAksesDanIdentitas();
+    // --- Tampilkan Role & Identitas Login di sebelah tombol Keluar ---
+      let sesiAktif = null;
+      try {
+        sesiAktif = JSON.parse(
+          localStorage.getItem("pegawaiAktifKelurahan") || "null",
+        );
+      } catch (_) {
+        sesiAktif = null;
       }
 
-      terapkanHakAksesDanIdentitas();
+      const peranAktif = (
+        sesiAktif?.role ||
+        localStorage.getItem("hakAksesKelurahan") ||
+        ""
+      )
+        .trim()
+        .toLowerCase();
 
+      const labelRole = {
+        superadmin: "Super Admin",
+        super_admin: "Super Admin",
+        admin: "Admin / Pejabat",
+        viewer: "Viewer",
+      };
+
+      const teksRole = labelRole[peranAktif] || peranAktif || "Pengguna";
+      const badgePengguna = document.getElementById("badgePenggunaAktif");
+      if (badgePengguna) {
+        badgePengguna.textContent = sesiAktif?.nama
+          ? `${sesiAktif.nama} · ${sesiAktif.jabatan || peranAktif}`
+          : `Peran: ${peranAktif}`;
+      }
+// --- akhir Role & Identitas Login di sebelah tombol Keluar ---
+        
       function keluarSistem() {
         localStorage.removeItem("hakAksesKelurahan");
         localStorage.removeItem("pegawaiAktifKelurahan");
